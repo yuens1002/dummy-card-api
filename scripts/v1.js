@@ -2,12 +2,12 @@ let deck = {
 
 	cards: [],
 	Card: class {
-		constructor(title, text, author, picUrl) {
+		constructor(title, text, author) {
 			this.id = undefined;
 			this.title = title;
 			this.text = text;
 			this.author = author;
-			this.picUrl = picUrl;
+			this.picUrl = 'http://lorempixel.com/300/150/';
 		}
 	},
 	saveCards: function(arrOfCards) {
@@ -17,7 +17,7 @@ let deck = {
 		console.log(this.cards);
 	},
 	addCard: function(title, text, author, picUrl) {
-		this.cards.unshift(new this.Card(title, text, author, picUrl));
+		this.cards.unshift(new this.Card(title, text, author));
 		this.showCards();
 	},
 	editCard: function(position, title, text, author) {
