@@ -1,14 +1,6 @@
-# Dummy Card API
-Simple server exposing *dummy* data for display on cards.
-
-## Usage
-Simply run
-
-    npm install
-    npm start
-
-and access ``http://127.0.0.1:3000/cards`` to get an array of data.
-
-If you want to retrieve just a subset, specify the lower and upper limit as query parameters, for example:
-
-    http://127.0.0.1:3000/cards?_start=8&_end=12
+should display all cards (data entries) from the database
+should store cards locally
+should have a way to show all the cards
+should be able to add a new card
+should be able to edit a card
+should be able to delete a card
