@@ -1,8 +1,8 @@
 {
   "cards": [
-	{
+    {
       "id": 1,
-	  "title": "We are Humans",
+      "title": "We are Humans",
       "text": "We act like humans, we talk like humans, and we think like humans. And we call out anyone who does the opposite.",
       "author": "António Capelo",
       "image_url": "http://lorempixel.com/300/150/"
@@ -58,16 +58,9 @@
     },
     {
       "id": 9,
-	  "title": "We are Humans Too",
+      "title": "We are Humans Too",
       "text": "We act like humans, we talk like humans, and we think like humans. And we call out anyone who does the opposite.",
       "author": "António Capelo",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
-      "id": 10,
-      "title": "We work together Too",
-      "text": "We insist on working collaborativelly. <strong>No rockstars</strong>. No departments. The whole owns the whole project together.",
-      "author": "José Tavares",
       "image_url": "http://lorempixel.com/300/150/"
     },
     {
@@ -75,20 +68,6 @@
       "title": "We change Too",
       "text": "Nothing is sacred, from our habits to our rituals, to our enviroment. Change is a natural part of the human life, and we prefer to embrace it.",
       "author": "Pedro Almeida",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
-      "id": 12,
-      "title": "We hire differently Too",
-      "text": "Most companies operate under the premise that employees should be replaceable like parts of an assembly line. We choose our people more carefully.",
-      "author": "Marta Fernandes",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
-      "id": 13,
-      "title": "Get autonomous Too",
-      "text": "You’re given an incredible amount of freedom and autonomy at Mindera. That goes for everyone.",
-      "author": "Luís Couto",
       "image_url": "http://lorempixel.com/300/150/"
     },
     {
@@ -118,6 +97,69 @@
       "text": "We don’t have an HR department. New hires are interviewed by the people who will be working with them. So get ready to care a lot about the people you work with.",
       "author": "Tiago Fernandes",
       "image_url": "http://lorempixel.com/300/150/"
+    },
+    {
+      "title": "out of the world 5",
+      "text": "something about the test",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 18
+    },
+    {
+      "title": "out of the world 5",
+      "text": "something about the test",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 19
+    },
+    {
+      "title": "out of the world 5",
+      "text": "something about the test",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 20
+    },
+    {
+      "title": "out of the world 5",
+      "text": "something about the test",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 21
+    },
+    {
+      "title": "out of the world 5",
+      "text": "something about the test",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 22
+    },
+    {
+      "title": "out of the world 6",
+      "text": "something about the test",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 23
+    },
+    {
+      "title": "out of the world 6",
+      "text": "something about the test",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 24
+    },
+    {
+      "title": "gimme a big high 10",
+      "text": "this is such an awesome experience, one can't miss it for the world",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 25
+    },
+    {
+      "title": "gimme a big high 10",
+      "text": "this is such an awesome experience, one can't miss it for the world",
+      "author": "sunny",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 26
     }
   ]
 }
