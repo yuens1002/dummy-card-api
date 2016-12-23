@@ -4,11 +4,15 @@ let deck = {
 	cardsPerPage: 3,
 	Card: class {
 		constructor(title, text, author) {
-			this.id = undefined;
+			this.id = this.getNextId;
 			this.title = title;
 			this.text = text;
 			this.author = author;
 			this.picUrl = 'http://lorempixel.com/300/150/';
+		}
+		get getNextId() {
+			let id = [];
+			return (Math.max(...(deck.cards.map((card, i) => id[i] = card.id))))+1;
 		}
 	},
 	saveCards: function(arrOfCards) {
@@ -41,8 +45,8 @@ let deck = {
 	},
 	fetchCards: function() {
 	  const BaseUrl = 'http://localhost:3000/cards';
-	  const threeCards = '?_page=1&_limit=99';
-	  let curl = BaseUrl + threeCards;
+	  const cards99 = '?_page=1&_limit=99';
+	  let curl = BaseUrl + cards99;
 
 // research server-side pagination using header Link
 //	  fetch(curl)
