@@ -40,16 +40,26 @@ a:hover {
 	color: #6cd7f7;
 }
 
-.header {
+header {
 	font-family: 'Patua One', cursive;
 	padding-top: 20px;
 	font-size: 600%;
 	text-align: center;
 }
 
-.nav {
+nav {
 	font-family: 'Patua One', cursive;
 	text-align: center;
+}
+
+nav ul {
+	display: inline;
+	padding-left: 2rem;
+}
+
+nav li {
+	display: inline;
+	padding-right: 2rem;
 }
 
 .child-functions {
@@ -88,16 +98,6 @@ a:hover {
 
 .child-inner {
 	padding: 1rem;
-}
-
-.nav ul {
-	display: inline;
-	padding-left: 2rem;
-}
-
-.nav li {
-	display: inline;
-	padding-right: 2rem;
 }
 
 .card-action {
