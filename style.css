@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Raleway|Libre+Baskerville|Josefin+Slab|Fauna+One|Patua+One');
+
+body {
+	background-color: #eaeaea;
+	font-family: 'Libre Baskerville', sans-serif;
+	line-height: 1.3;
+	font-size: 16px;
+	padding-bottom: 50px;
+}
+
+p {
+	font-size: 90%;
+}
+
+button {
+    background-color: #008CBA; /* Green */
+	font-family: 'Patua One', cursive;
+	border: none;
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+	-webkit-transition-duration: 0.3s; /* Safari */
+    transition-duration: 0.3s;
+}
+
+button:hover {
+    background-color: #6cd7f7; /* Green */
+	color: #333;
+}
+
+a {
+	text-decoration: none;
+	color: #008CBA;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #6cd7f7;
+}
+
+.header {
+	font-family: 'Patua One', cursive;
+	padding-top: 20px;
+	font-size: 600%;
+	text-align: center;
+}
+
+.nav {
+	font-family: 'Patua One', cursive;
+	text-align: center;
+}
+
+.child-functions {
+	margin: 1rem;
+	display: inline-block;
+	text-align: center;
+	width: 300px;
+}
+
+.container {
+	width: 100%;
+	display: flex;
+	display: inline-flex;
+	flex-flow: row wrap;
+	justify-content: center;
+
+}
+
+.author {
+	font-size: 80%;
+	text-align: right;
+	font-style: italic;
+}
+
+.title {
+	font-size: 150%;
+}
+
+.child {
+	margin: 1rem;
+	display: inline-block;
+	background-color: white;
+	width: 300px;
+	border-bottom: 2px solid #e3e3e3;
+}
+
+.child-inner {
+	padding: 1rem;
+}
+
+.nav ul {
+	display: inline;
+	padding-left: 2rem;
+}
+
+.nav li {
+	display: inline;
+	padding-right: 2rem;
+}
+
+.card-action {
+	font-family: 'Patua One', cursive;
+	padding-top: 1.5rem;
+	word-spacing: 1rem;
+	text-align: center;
+}
