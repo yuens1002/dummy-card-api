@@ -27,7 +27,8 @@ let deck = {
 	editCard: function(id, title, text, author) {
 		this.saveEditedCardToDb(id, title, text, author);
 	},
-	deleteCard: function(id) {
+	deleteCard: function(id,idx) {
+		this.cards.splice(idx, 1);
 		this.delCardFromDb(id);
 	},
 	delCardFromDb: function(id) {
@@ -35,7 +36,7 @@ let deck = {
 		let curl = BaseUrl+ '/' + id
 		fetch(curl, {
 			method: 'DELETE'
-		}).then(() => this.fetchCards())
+		}).then(() => view.showPage(view.currentPage))
 	    .catch((err) => console.log(err));
 	},
 	saveEditedCardToDb: function(id, title, text, author) {
@@ -94,20 +95,26 @@ let handlers = {
 	addCard: function() {
 
 	},
-	editCard: function(id) {
-		//grab the title of the card
-		//grab the text of the card
-
-		//deck.editCard(id, title, text);
+	editCard: function(idx) {
+		let node = document.getElementById(idx).children[1];
+		let eleActions = node.children[0];
+		let eleTitle = node.children[1];
+		let eleText = node.children[2];
+		view.showEditInputs(node, eleActions, eleTitle, eleText);
 	},
-	deleteCard: function(id) {
-		deck.deleteCard(id);
+	deleteCard: function(idx) {
+		let cardId = deck.cards[idx].id;
+		deck.deleteCard(cardId, idx);
 	},
 	prevPage: function() {
 		view.showPage(view.currentPage-1);
 	},
 	nextPage: function() {
 		view.showPage(view.currentPage+1);
+	},
+	cancel: function(idx) {
+		let divElm = document.getElementById('main')
+		divElm.replaceChild(view.makeCard(idx, 'editDel'), document.getElementById(idx));
 	}
 };
 
@@ -118,7 +125,7 @@ let view = {
 	makeCard: function(idx, actionGroup) {
 		let eleChild = document.createElement('div');
 		eleChild.setAttribute('class', 'child');
-		eleChild.setAttribute('id', deck.cards[idx].id);
+		eleChild.setAttribute('id', idx);
 		let eleImg = document.createElement('div');
 		let eleSrc = document.createElement('img');
 		eleSrc.setAttribute('src', deck.cards[idx].image_url);
@@ -188,26 +195,23 @@ let view = {
 			document.querySelector('#next-link').style.visibility = "hidden" :
 			document.querySelector('#next-link').removeAttribute('style')
 	},
-	showEditInputs: function(id) {
-		let node = document.getElementById(id);
-		let eleActions = node.parentElement.firstChild;
-		let eleTitle = node.parentElement.children[1];
-		let eleText = node.parentElement.children[2];
+	showEditInputs: function(node, eleActions, eleTitle, eleText) {
+
 		let inputTitle = document.createElement('input');
 		let areaText = document.createElement('textarea');
 
-		inputTitle.value = node.parentElement.children[1].innerHTML;
+		inputTitle.value = node.children[1].innerHTML;
 		inputTitle.size = 32;
-		areaText.value = node.parentElement.children[2].innerHTML;
+		areaText.value = node.children[2].innerHTML;
 
 		eleActions.innerHTML = this.createCardActionLinks('cancelSave');
-		node.parentNode.replaceChild(inputTitle, eleTitle);
-		node.parentNode.replaceChild(areaText, eleText);
+		node.replaceChild(inputTitle, eleTitle);
+		node.replaceChild(areaText, eleText);
 
 	},
 	setupEventListeners: function() {
 		deck.fetchCards();
-		let cardId = 0;
+		let cardIdx = 0;
 		let navElements = document.querySelector('nav');
 		navElements.addEventListener('click', function(event) {
 			let navElementClicked = event.target;
@@ -221,13 +225,17 @@ let view = {
 		cardElements.addEventListener('click', function(event) {
 			let cardElmClicked = event.target;
 			if (cardElmClicked.className === 'delete-links') {
-				cardIdx = cardElmClicked.parentNode.parentNode.id;
+				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
 				handlers.deleteCard(cardIdx);
 			} else if (cardElmClicked.className === 'edit-links') {
-				cardId = cardElmClicked.parentNode.id;
-				view.showEditInputs(cardId);
+				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
+				handlers.editCard(cardIdx);
 			} else if (cardElmClicked.className === 'cancel-links') {
-				console.log('cancel clicked');
+				// if user clicks cancel, it should take the user back to original card
+				// makeCard with the idx of the card
+				// render it in the id div
+				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
+				handlers.cancel(cardIdx);
 			} else if (cardElmClicked.className === 'save-links') {
 				console.log('save clicked');
 			}

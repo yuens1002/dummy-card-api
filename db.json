@@ -1,13 +1,6 @@
 {
   "cards": [
     {
-      "id": 2,
-      "title": "We work together",
-      "text": "We insist on working collaborativelly. <strong>No rockstars</strong>. No departments. The whole owns the whole project together.",
-      "author": "José Tavares",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
       "id": 4,
       "title": "We hire differently",
       "text": "Most companies operate under the premise that employees should be replaceable like parts of an assembly line. We choose our people more carefully.",
@@ -27,20 +20,6 @@
       "text": "Our flat structure calls for it by necessity. Being a leader may feel unnatural at first, but we expect everyone to step up and own part of the project.",
       "author": "César Aguiar",
       "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
-      "id": 9,
-      "title": "We are Humans Too",
-      "text": "We act like humans, we talk like humans, and we think like humans. And we call out anyone who does the opposite.",
-      "author": "António Capelo",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
-      "title": "Time to Save to GitHub",
-      "text": "Not quite happy with the link placement, need more tweaking tomorrow morning. But reallly, I should spend all the time that is left to build handlers and listeners",
-      "author": "Sunny Yuen",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 28
     }
   ]
 }
