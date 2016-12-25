@@ -1,6 +1,133 @@
-@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Patua+One');
 
 body {
-	font-family: 'Libre Baskerville', serif;
-	margin: 2rem
+	background-color: #eaeaea;
+	font-family: 'Roboto', sans-serif;
+	line-height: 1.3;
+	font-size: 16px;
+	padding-bottom: 50px;
+}
+
+p {
+	font-size: 90%;
+}
+
+textarea {
+	height: 8rem;
+}
+
+input[type=text],
+textarea {
+	font-family: 'Roboto', sans-serif;
+	font-size: 90%;
+  	-webkit-border-radius: 5;
+  	-moz-border-radius: 5;
+  	border-radius: 5px;
+  	/* spec for percentage unit to prevent horizontal
+	scroll bar from showing up when the page is
+	resized to smaller than max-width*/
+  	padding: .5rem 4%;  /* sets the padding needed for the placeholder text */
+  	width: 100%;
+  	outline: none;
+	resize: none;
+	overflow: auto;
+	box-sizing: border-box;
+	margin: 0 .5rem 1rem 0;
+	border: 2px solid #eaeaea;
+}
+
+
+input[type=text]:focus, textarea:focus {
+    border: 2px solid #999;
+}
+
+.edit-links,
+.delete-links,
+.cancel-links,
+.save-links,
+.newcard-cancel-links,
+.newcard-save-links,
+#prev-link,
+#next-link,
+#add-card-link {
+	font-family: 'Patua One', cursive;
+    color: #008CBA;
+    text-decoration: none;
+	-webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.edit-links:hover,
+.delete-links:hover,
+.cancel-links:hover,
+.save-links:hover,
+.newcard-cancel-links:hover,
+.newcard-save-links:hover,
+#prev-link:hover,
+#next-link:hover,
+#add-card-link:hover {
+	color: #6cd7f7;
+	cursor: pointer;
+}
+
+header {
+	font-family: 'Patua One', cursive;
+	padding-top: 20px;
+	font-size: 600%;
+	text-align: center;
+}
+
+nav {
+	font-family: 'Patua One', cursive;
+	text-align: center;
+	white-space: nowrap;
+}
+
+nav ul {
+	display: inline;
+}
+
+nav li {
+	display: inline-block;
+	padding-right: 2rem;
+}
+
+.child-inner ul {
+	text-align: right;
+}
+
+.child-inner li {
+	display: inline-block;
+	padding-left: 2rem;
+}
+
+.container {
+	width: 100%;
+	display: flex;
+	display: inline-flex;
+	flex-flow: row wrap;
+	justify-content: center;
+
+}
+
+.author {
+	font-size: 80%;
+	font-style: italic;
+	text-align: right;
+}
+
+.page-info {
+	font-size: 150%;
+}
+
+.child {
+	margin: 3rem 1rem 1rem 1rem;
+	display: inline-block;
+	background-color: white;
+	width: 300px;
+	border-bottom: 2px solid #e3e3e3;
+}
+
+.child-inner {
+	padding: 0 1.5rem 1rem 1.5rem;
 }
