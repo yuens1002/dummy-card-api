@@ -90,22 +90,24 @@ let deck = {
 	}
 };
 
-let listeners = {
-
-};
-
 let handlers = {
-	editCard: function() {
-		deck.editCard(id, title, text, author);
+	addCard: function() {
+
 	},
-	deleteCard: function() {
+	editCard: function(id) {
+		//grab the title of the card
+		//grab the text of the card
+
+		//deck.editCard(id, title, text);
+	},
+	deleteCard: function(id) {
 		deck.deleteCard(id);
 	},
 	prevPage: function() {
-
+		view.showPage(view.currentPage-1);
 	},
 	nextPage: function() {
-
+		view.showPage(view.currentPage+1);
 	}
 };
 
@@ -113,6 +115,36 @@ let view = {
 	cardsPerPage: 3,
 	currentPage: 1,
 	appTitleText: 'Card Demo',
+	makeCard: function(idx, actionGroup) {
+		let eleChild = document.createElement('div');
+		eleChild.setAttribute('class', 'child');
+		eleChild.setAttribute('id', deck.cards[idx].id);
+		let eleImg = document.createElement('div');
+		let eleSrc = document.createElement('img');
+		eleSrc.setAttribute('src', deck.cards[idx].image_url);
+		let eleInnerChild = document.createElement('div');
+		eleInnerChild.setAttribute('class', 'child-inner');
+		let eleTitle = document.createElement('h3');
+		eleTitle.innerHTML = deck.cards[idx].title;
+		let eleText = document.createElement('p');
+		eleText.innerHTML = deck.cards[idx].text;
+		let eleAuthor = document.createElement('p');
+		eleAuthor.setAttribute('class', 'author');
+		eleAuthor.innerHTML = '- ' + deck.cards[idx].author;
+		let eleLinkUl = document.createElement('ul');
+		eleLinkUl.innerHTML = this.createCardActionLinks(actionGroup);
+		eleImg.appendChild(eleSrc);
+		eleInnerChild.appendChild(eleLinkUl);
+		eleInnerChild.appendChild(eleTitle);
+		eleInnerChild.appendChild(eleText);
+		eleInnerChild.appendChild(eleAuthor);
+
+		eleChild.appendChild(eleImg);
+		eleChild.appendChild(eleInnerChild);
+
+		return eleChild;
+
+	},
 	showPage: function(page) {
 		this.currentPage = page;
 		let eleMain = document.querySelector('#main');
@@ -120,41 +152,21 @@ let view = {
 		this.showTitle();
 		for (var i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
     		if (deck.cards[i]) {
-				let eleChild = document.createElement('div');
-				eleChild.setAttribute('class', 'child');
-				let eleImg = document.createElement('div');
-				let eleSrc = document.createElement('img');
-				eleSrc.setAttribute('src', deck.cards[i].image_url);
-				let eleInnerChild = document.createElement('div');
-				eleInnerChild.setAttribute('class', 'child-inner');
-				let eleTitle = document.createElement('h3');
-				eleTitle.innerHTML = deck.cards[i].title;
-				let eleText = document.createElement('p');
-				eleText.innerHTML = deck.cards[i].text;
-				let eleAuthor = document.createElement('p');
-				eleAuthor.setAttribute('class', 'author');
-				eleAuthor.innerHTML = '- ' + deck.cards[i].author;
-				let eleLinkUl = document.createElement('ul');
-				eleLinkUl.innerHTML = this.createCardActionLinks();
-
-				eleImg.appendChild(eleSrc);
-				eleInnerChild.appendChild(eleLinkUl);
-				eleInnerChild.appendChild(eleTitle);
-				eleInnerChild.appendChild(eleText);
-				eleInnerChild.appendChild(eleAuthor);
-
-				eleChild.appendChild(eleImg);
-				eleChild.appendChild(eleInnerChild);
-				eleMain.appendChild(eleChild);
+				eleMain.appendChild(this.makeCard(i,'editDel'));
 			}
 		}
-
 		this.showPageInfo(this.currentPage);
 		this.showPrevLink(this.currentPage);
 		this.showNextLink(this.currentPage);
+
 	},
-	createCardActionLinks: function() {
-		let eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
+	createCardActionLinks: function(type) {
+		let eleLinks = '';
+		if (type === 'editDel') {
+			eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
+		} else if (type === 'cancelSave') {
+			eleLinks = '<li class="cancel-links">✕ Cancel</li><li class="save-links">✓ Save</li>';
+		}
 		return eleLinks;
 	},
 	showTitle: function() {
@@ -175,7 +187,53 @@ let view = {
 		(page === deck.getNumPages()) ?
 			document.querySelector('#next-link').style.visibility = "hidden" :
 			document.querySelector('#next-link').removeAttribute('style')
+	},
+	showEditInputs: function(id) {
+		let node = document.getElementById(id);
+		let eleActions = node.parentElement.firstChild;
+		let eleTitle = node.parentElement.children[1];
+		let eleText = node.parentElement.children[2];
+		let inputTitle = document.createElement('input');
+		let areaText = document.createElement('textarea');
+
+		inputTitle.value = node.parentElement.children[1].innerHTML;
+		inputTitle.size = 32;
+		areaText.value = node.parentElement.children[2].innerHTML;
+
+		eleActions.innerHTML = this.createCardActionLinks('cancelSave');
+		node.parentNode.replaceChild(inputTitle, eleTitle);
+		node.parentNode.replaceChild(areaText, eleText);
+
+	},
+	setupEventListeners: function() {
+		deck.fetchCards();
+		let cardId = 0;
+		let navElements = document.querySelector('nav');
+		navElements.addEventListener('click', function(event) {
+			let navElementClicked = event.target;
+			if (navElementClicked.id === 'prev-link') {
+				handlers.prevPage();
+			} else if (navElementClicked.id === 'next-link') {
+				handlers.nextPage();
+			}
+		});
+		let cardElements = document.querySelector('#main');
+		cardElements.addEventListener('click', function(event) {
+			let cardElmClicked = event.target;
+			if (cardElmClicked.className === 'delete-links') {
+				cardIdx = cardElmClicked.parentNode.parentNode.id;
+				handlers.deleteCard(cardIdx);
+			} else if (cardElmClicked.className === 'edit-links') {
+				cardId = cardElmClicked.parentNode.id;
+				view.showEditInputs(cardId);
+			} else if (cardElmClicked.className === 'cancel-links') {
+				console.log('cancel clicked');
+			} else if (cardElmClicked.className === 'save-links') {
+				console.log('save clicked');
+			}
+		});
 	}
 };
 
-deck.fetchCards();
+view.setupEventListeners();
+
