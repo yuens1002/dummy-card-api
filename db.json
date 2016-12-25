@@ -99,60 +99,18 @@
       "image_url": "http://lorempixel.com/300/150/"
     },
     {
-      "title": "out of the world 5",
-      "text": "something about the test",
-      "author": "sunny",
+      "title": "v3 is Finally Working!",
+      "text": "This is such an awesome experience, can't miss it for the world. If this is just a test, I should write more text to test the boundaries.",
+      "author": "Sunny Yuen",
       "image_url": "http://lorempixel.com/300/150/",
-      "id": 19
+      "id": 27
     },
     {
-      "title": "out of the world 5",
-      "text": "something about the test",
-      "author": "sunny",
+      "title": "Time to Save to GitHub",
+      "text": "Not quite happy with the link placement, need more tweaking tomorrow morning. But reallly, I should spend all the time that is left to build handlers and listeners",
+      "author": "Sunny Yuen",
       "image_url": "http://lorempixel.com/300/150/",
-      "id": 20
-    },
-    {
-      "title": "out of the world 5",
-      "text": "something about the test",
-      "author": "sunny",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 21
-    },
-    {
-      "title": "out of the world 5",
-      "text": "something about the test",
-      "author": "sunny",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 22
-    },
-    {
-      "title": "out of the world 6",
-      "text": "something about the test",
-      "author": "sunny",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 23
-    },
-    {
-      "title": "out of the world 6",
-      "text": "something about the test",
-      "author": "sunny",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 24
-    },
-    {
-      "title": "gimme a big high 10",
-      "text": "this is such an awesome experience, one can't miss it for the world",
-      "author": "sunny",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 25
-    },
-    {
-      "title": "gimme a big high 10",
-      "text": "this is such an awesome experience, one can't miss it for the world",
-      "author": "sunny",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 26
+      "id": 28
     }
   ]
 }
