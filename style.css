@@ -102,6 +102,6 @@ nav li {
 	padding: 0 1.5rem 1rem 1.5rem;
 }
 
-.edit-links, .delete-links {
+.edit-links, .delete-links, .cancel-links, .save-links {
 	font-family: 'Patua One', cursive;
 }
