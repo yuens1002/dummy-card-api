@@ -1,6 +1,6 @@
-1. should handle mouse click on next page to show next 3 cards in the deck 
-2. should handle mouse click on previous page to show previous 3 cards in the deck
-3. should handle mouse click on delete to delete card from db
-4. should handle mouse click on edit to show editable text fields and save edits to db 
-5. should handle mouse click on add to show editable text fields and save new card to db
-6. should handle fetch cards when document is loaded as a event
+1. should give a slight delay on each image load  
+2. should scroll to the previous page if the current page is empty
+3. should load cards with a fade effect
+4. should give some animation to when adding or deleting a card
+5. should IFFE the application to minimize namespacing issues
+6. should consider an action (trigger) to turn editing on & off
