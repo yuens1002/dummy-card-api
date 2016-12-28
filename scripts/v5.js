@@ -15,6 +15,9 @@ let deck = {
 			return (Math.max(...(deck.cards.map((card, i) => id[i] = card.id))))+1;
 		}
 	},
+ 	takeNap: function(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	},
 	saveCards: function(arrOfCards) {
 		arrOfCards.forEach((card, i) => this.cards[i] = card);
 	},
@@ -149,15 +152,6 @@ let view = {
 	currentPage: 1,
 	appTitleText: 'Card Demo',
 	makeCard: function(idx, actionGroup) {
-
-//		if (arguments.length > 2) {
-//			setTimeout(function(){
-//					let eleSrc = document.createElement('img');
-//					eleSrc.setAttribute('src', deck.cards[idx].image_url);
-//					eleImg.appendChild(eleSrc);
-//			}, 0)
-//		}
-
 		let eleChild = document.createElement('div');
 		eleChild.setAttribute('class', 'child');
 		eleChild.setAttribute('id', idx);
@@ -181,7 +175,6 @@ let view = {
 		eleInnerChild.appendChild(eleTitle);
 		eleInnerChild.appendChild(eleText);
 		eleInnerChild.appendChild(eleAuthor);
-
 		eleChild.appendChild(eleImg);
 		eleChild.appendChild(eleInnerChild);
 
@@ -193,18 +186,12 @@ let view = {
 	},
 	showPage: function(page) {
 		this.currentPage = page;
-		let eleMain = document.querySelector('#main');
-		eleMain.innerHTML = '';
 		this.showTitle();
 		this.showPageInfo(this.currentPage);
 		this.showPrevLink(this.currentPage);
 		this.showNextLink(this.currentPage);
-		for (var i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
-    		if (deck.cards[i]) {
-				eleMain.appendChild(this.makeCard(i,'editDel'));
-			}
-		}
-//		this.loadImages();
+		//take a async break btwn each image http request
+		this.delayPage(page);
 	},
 	createCardActionLinks: function(type) {
 		let eleLinks = '';
@@ -217,18 +204,16 @@ let view = {
 		}
 		return eleLinks;
 	},
-//	loadImages: function () {
-//		let imgDiv = document.getElementsByClassName('img');
-//		for (var i = 0; i < imgDiv.length; i++) {
-//			(function(i) {
-//				setTimeout(function() {
-//					let eleImg = document.createElement('img');
-//					eleImg.setAttribute('src', 'http://lorempixel.com/300/150/')
-//					imgDiv[i].appendChild(eleImg);
-//				}, 0); //3000 = 3seconds
-//			})(i);
-//		}
-//	},
+	delayPage: async function (page) {
+		let eleMain = document.querySelector('#main');
+		eleMain.innerHTML = '';
+		for (var i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
+    		if (deck.cards[i]) {
+				eleMain.appendChild(this.makeCard(i,'editDel'));
+				await deck.takeNap(500);
+			}
+		}
+	},
 	showTitle: function() {
 		let eleHeader = document.querySelector('header');
 		eleHeader.innerHTML = this.appTitleText;
