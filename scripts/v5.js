@@ -1,14 +1,16 @@
+(function() {
+
 let deck = {
 	cards: [],
 	Card: class {
 		constructor(title, text, author) {
-			this.id = this.getNextId;
+			this.id = this.nextId;
 			this.title = title;
 			this.text = text;
 			this.author = author;
 			this.image_url = 'http://placehold.it/300x150/6cd7f7/333333?text=Add+a+Card';
 		}
-		get getNextId() {
+		get nextId() {
 			let id = [];
 			return (Math.max(...(deck.cards.map((card, i) => id[i] = card.id))))+1;
 		}
@@ -134,7 +136,7 @@ let handlers = {
 		deck.editCard(cardId, title, text, idx);
 	},
 	cancelNewCard: function(idx) {
-		deck.deleteCard(0, idx, 1);
+		deck.deleteCard(0, idx, true);
 		view.showPage(1);
 	},
 	saveNewCard: function(idx, title, text, author) {
@@ -147,10 +149,20 @@ let view = {
 	currentPage: 1,
 	appTitleText: 'Card Demo',
 	makeCard: function(idx, actionGroup) {
+
+//		if (arguments.length > 2) {
+//			setTimeout(function(){
+//					let eleSrc = document.createElement('img');
+//					eleSrc.setAttribute('src', deck.cards[idx].image_url);
+//					eleImg.appendChild(eleSrc);
+//			}, 0)
+//		}
+
 		let eleChild = document.createElement('div');
 		eleChild.setAttribute('class', 'child');
 		eleChild.setAttribute('id', idx);
 		let eleImg = document.createElement('div');
+		eleImg.setAttribute('class', 'img');
 		let eleSrc = document.createElement('img');
 		eleSrc.setAttribute('src', deck.cards[idx].image_url);
 		let eleInnerChild = document.createElement('div');
@@ -174,7 +186,6 @@ let view = {
 		eleChild.appendChild(eleInnerChild);
 
 		return eleChild;
-
 	},
 	showCard: function(idx, actionGroup) {
 		let divElm = document.getElementById('main');
@@ -185,15 +196,15 @@ let view = {
 		let eleMain = document.querySelector('#main');
 		eleMain.innerHTML = '';
 		this.showTitle();
+		this.showPageInfo(this.currentPage);
+		this.showPrevLink(this.currentPage);
+		this.showNextLink(this.currentPage);
 		for (var i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
     		if (deck.cards[i]) {
 				eleMain.appendChild(this.makeCard(i,'editDel'));
 			}
 		}
-		this.showPageInfo(this.currentPage);
-		this.showPrevLink(this.currentPage);
-		this.showNextLink(this.currentPage);
-
+//		this.loadImages();
 	},
 	createCardActionLinks: function(type) {
 		let eleLinks = '';
@@ -206,6 +217,18 @@ let view = {
 		}
 		return eleLinks;
 	},
+//	loadImages: function () {
+//		let imgDiv = document.getElementsByClassName('img');
+//		for (var i = 0; i < imgDiv.length; i++) {
+//			(function(i) {
+//				setTimeout(function() {
+//					let eleImg = document.createElement('img');
+//					eleImg.setAttribute('src', 'http://lorempixel.com/300/150/')
+//					imgDiv[i].appendChild(eleImg);
+//				}, 0); //3000 = 3seconds
+//			})(i);
+//		}
+//	},
 	showTitle: function() {
 		let eleHeader = document.querySelector('header');
 		eleHeader.innerHTML = this.appTitleText;
@@ -291,7 +314,7 @@ let view = {
 				handlers.saveEdit(cardIdx, title, text);
 			} else if (cardElmClicked.className === 'newcard-cancel-links') {
 				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
-				handlers.deleteCard(cardIdx);
+				handlers.cancelNewCard(cardIdx);
 			} else if (cardElmClicked.className === 'newcard-save-links') {
 				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
 				title = cardElmClicked.parentNode.parentNode.childNodes[1].value;
@@ -303,3 +326,5 @@ let view = {
 	}
 };
 view.setupEventListeners();
+window.ddeck = view
+})();
