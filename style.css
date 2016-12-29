@@ -41,6 +41,11 @@ input[type=text]:focus, textarea:focus {
     border: 2px solid #999;
 }
 
+.new-link,
+.edit-link,
+.back-link,
+.save-alledits-link,
+.save-allnewcards-link,
 .edit-links,
 .delete-links,
 .cancel-links,
@@ -49,7 +54,7 @@ input[type=text]:focus, textarea:focus {
 .newcard-save-links,
 #prev-link,
 #next-link,
-#add-card-link {
+#mode-links {
 	font-family: 'Patua One', cursive;
     color: #008CBA;
     text-decoration: none;
@@ -57,6 +62,11 @@ input[type=text]:focus, textarea:focus {
     transition-duration: 0.3s;
 }
 
+.new-link:hover,
+.edit-link:hover,
+.back-link:hover,
+.save-alledits-link:hover,
+.save-allnewcards-link:hover,
 .edit-links:hover,
 .delete-links:hover,
 .cancel-links:hover,
@@ -65,7 +75,7 @@ input[type=text]:focus, textarea:focus {
 .newcard-save-links:hover,
 #prev-link:hover,
 #next-link:hover,
-#add-card-link:hover {
+#mode-links:hover {
 	color: #6cd7f7;
 	cursor: pointer;
 }
