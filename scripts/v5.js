@@ -2,12 +2,26 @@
 
 let deck = {
 	cards: [],
-//	appconst: {},
+	appconst: {
+		image_url: 'http://lorempixel.com/300/150/',
+		image_add_url: 'http://placehold.it/300x150/6cd7f7/333333?text=Add+a+Card',
+		base_url: 'http://localhost:3000/cards',
+		cards99: '?_page=1&_limit=99&_sort=id&_order=DESC'
+	},
 //	new: [],
 	modes: {
 		view: 'Card Demo',
-		new: 'New Card',
-		edit: 'Edit Card'
+		new: 'Add a Card',
+		edit: 'Edit Cards'
+	},
+	setMode: function(mode) {
+		if (mode === this.modes.view) {
+			view.currentMode = this.modes.view;
+		} else if (mode === this.modes.new) {
+			view.currentMode = this.modes.new;
+		} else {
+			view.currentMode = this.modes.edit;
+		}
 	},
 	Card: class {
 		constructor(title, text, author) {
@@ -15,7 +29,7 @@ let deck = {
 			this.title = title;
 			this.text = text;
 			this.author = author;
-			this.image_url = 'http://placehold.it/300x150/6cd7f7/333333?text=Add+a+Card';
+			this.image_url = deck.appconst.image_add_url;
 		}
 		get nextId() {
 			let id = [];
@@ -38,7 +52,7 @@ let deck = {
 			this.cards[idx].title = title;
 			this.cards[idx].text = text;
 			this.cards[idx].author = author;
-			this.cards[idx].image_url = 'http://lorempixel.com/300/150/';
+			this.cards[idx].image_url = this.appconst.image_url;
 			this.saveCardToDb(idx);
 		}
 	},
@@ -56,16 +70,14 @@ let deck = {
 		}
 	},
 	delCardFromDb: function(id) {
-		const BaseUrl = 'http://localhost:3000/cards';
-		let curl = BaseUrl+ '/' + id
+		const curl = this.appconst.base_url+ '/' + id
 		fetch(curl, {
 			method: 'DELETE'
 		}).then(() => view.showPage(view.currentPage, view.currentMode))
 	    .catch((err) => console.log(err));
 	},
 	saveEditedCardToDb: function(id, title, text, idx) {
-		const BaseUrl = 'http://localhost:3000/cards';
-		let curl = BaseUrl+ '/' + id
+		const curl = this.appconst.base_url+ '/' + id
 		fetch(curl, {
 			method: 'PATCH',
 			headers: new Headers({
@@ -79,10 +91,8 @@ let deck = {
 	    .catch((err) => console.log(err));
 	},
 	saveCardToDb: function(idx) {
-		const BaseUrl = 'http://localhost:3000/cards';
-		const picUrl = 'http://lorempixel.com/300/150/';
 		view.currentPage = 1;
-		fetch(BaseUrl, {
+		fetch(this.appconst.base_url, {
 			method: 'POST',
 			headers: new Headers({
 				'Content-Type': 'application/json'
@@ -91,16 +101,13 @@ let deck = {
 				title: this.cards[idx].title,
 				text: this.cards[idx].text,
 				author: this.cards[idx].author,
-				image_url: picUrl
+				image_url: this.appconst.image_url
 			})
 		}).then(() => view.showCard(idx, 'editDel'))
 	    .catch((err) => console.log(err));
 	},
 	fetchCards: function() {
-	  	const BaseUrl = 'http://localhost:3000/cards';
-	  	const cards99 = '?_page=1&_limit=99&_sort=id&_order=DESC';
-	  	const curl = BaseUrl + cards99;
-
+	  	const curl = this.appconst.base_url + this.appconst.cards99;
 // research server-side pagination using header Link
 //	  fetch(curl)
 //	  	.then((result) => (result.headers.get('Link')))
@@ -110,7 +117,6 @@ let deck = {
 	  			.then((data) => this.saveCards(data))
 	        	.then(() => view.showPage(view.currentPage, view.currentMode))
 	    .catch((err) => console.log(err));
-
 	}
 };
 
@@ -187,33 +193,33 @@ let view = {
 
 		return eleChild;
 	},
-	showCard: function(idx, actionGroup) {
-		let divElm = document.getElementById('main');
-		divElm.replaceChild(this.makeCard(idx, actionGroup), document.getElementById(idx));
-	},
-	showPage: function(page, mode) {
+//	showCard: function(idx, actionGroup) {
+//		let divElm = document.getElementById('main');
+//		divElm.replaceChild(this.makeCard(idx, actionGroup), document.getElementById(idx));
+//	},
+	showPage: function(page) {
 		this.currentPage = page;
-		this.currentMode = mode;
+//		this.currentMode = mode;
 		this.showTitle(this.currentMode);
-		this.showNavBar(mode);
+		this.showNavBar(this.currentMode);
 //		this.showPageInfo(this.currentPage);
 //		this.showPrevLink(this.currentPage);
 //		this.showNextLink(this.currentPage);
 		//take a async break btwn each image http request
-		this.delayPage(page);
+		this.showCards(page);
 	},
-	createCardActionLinks: function(type) {
-		let eleLinks = '';
-		if (type === 'editDel') {
-			eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
-		} else if (type === 'cancelSave') {
-			eleLinks = '<li class="cancel-links">✕ Cancel</li><li class="save-links">✓ Save</li>';
-		} else if (type === 'newCard') {
-			eleLinks = '<li class="newcard-cancel-links">✕ Cancel</li><li class="newcard-save-links">✓ Save</li>';
-		}
-		return eleLinks;
-	},
-	delayPage: async function (page) {
+//	createCardActionLinks: function(type) {
+//		let eleLinks = '';
+//		if (type === 'editDel') {
+//			eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
+//		} else if (type === 'cancelSave') {
+//			eleLinks = '<li class="cancel-links">✕ Cancel</li><li class="save-links">✓ Save</li>';
+//		} else if (type === 'newCard') {
+//			eleLinks = '<li class="newcard-cancel-links">✕ Cancel</li><li class="newcard-save-links">✓ Save</li>';
+//		}
+//		return eleLinks;
+//	},
+	showCards: async function (page) {
 		let eleMain = document.querySelector('#main');
 		eleMain.innerHTML = '';
 		for (var i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
