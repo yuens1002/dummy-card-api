@@ -2,16 +2,21 @@
 
 let deck = {
 	cards: [],
+	new: {
+		title: '',
+		text: '',
+		author: '',
+		image_url: ''
+	},
 	appconst: {
 		image_url: 'http://lorempixel.com/300/150/',
 		image_add_url: 'http://placehold.it/300x150/6cd7f7/333333?text=Add+a+Card',
 		base_url: 'http://localhost:3000/cards',
 		cards99: '?_page=1&_limit=99&_sort=id&_order=DESC'
 	},
-//	new: [],
 	modes: {
 		view: 'Card Demo',
-		new: 'Add a Card',
+		new: 'Add Card',
 		edit: 'Edit Cards'
 	},
 	setMode: function(mode) {
@@ -29,7 +34,7 @@ let deck = {
 			this.title = title;
 			this.text = text;
 			this.author = author;
-			this.image_url = deck.appconst.image_add_url;
+			this.image_url = deck.appconst.image_url;
 		}
 		get nextId() {
 			let id = [];
@@ -45,16 +50,9 @@ let deck = {
 	getNumPages: function() {
 		return Math.ceil(this.cards.length / view.cardsPerPage);
 	},
-	addCard: function(idx, title, text, author, isNew) {
-		if (isNew) {
-			this.cards.unshift(new this.Card(title, text, author));
-		} else {
-			this.cards[idx].title = title;
-			this.cards[idx].text = text;
-			this.cards[idx].author = author;
-			this.cards[idx].image_url = this.appconst.image_url;
-			this.saveCardToDb(idx);
-		}
+	addCard: function(title, text, author) {
+		this.cards.unshift(new this.Card(title, text, author));
+		this.saveCardToDb();
 	},
 	editCard: function(id, title, text, idx) {
 		this.cards[idx].title = title;
@@ -87,10 +85,10 @@ let deck = {
 				title: title,
 				text: text
 			})
-		}).then(() => view.showCard(idx, 'editDel'))
+		}).then(() => view.showCard(idx, 'editDel', view.currentMode))
 	    .catch((err) => console.log(err));
 	},
-	saveCardToDb: function(idx) {
+	saveCardToDb: function() {
 		view.currentPage = 1;
 		fetch(this.appconst.base_url, {
 			method: 'POST',
@@ -98,12 +96,12 @@ let deck = {
 				'Content-Type': 'application/json'
 			}),
 			body: JSON.stringify({
-				title: this.cards[idx].title,
-				text: this.cards[idx].text,
-				author: this.cards[idx].author,
+				title: deck.cards[0].title,
+				text: deck.cards[0].text,
+				author: deck.cards[0].author,
 				image_url: this.appconst.image_url
 			})
-		}).then(() => view.showCard(idx, 'editDel'))
+		}).then(() => view.showPage(1, deck.modes.view))
 	    .catch((err) => console.log(err));
 	},
 	fetchCards: function() {
@@ -121,18 +119,27 @@ let deck = {
 };
 
 let handlers = {
-	addCard: function(title, text, author) {
-		deck.addCard(0, title, text, author, 1);
-		view.showPage(1);
-		this.editCard(0, 1);
+//	addCard: function(title, text, author, mode) {
+//		deck.addCard(title, text, author);
+//		this.switchMode(mode);
+//		this.editCard(0, 1);
+//	},
+	switchMode: function(page, mode) {
+		deck.setMode(mode);
+		mode === deck.modes.new ? (
+			view.showNewPage(mode),
+			this.editCard(0, mode)
+		    ) : (
+			view.showPage(page, mode)
+		);
 	},
-	editCards: function(idx, isNew) {
+	editCard: function(idx, mode) {
 		let node = document.getElementById(idx).children[1];
 		let eleActions = node.children[0];
 		let eleTitle = node.children[1];
 		let eleText = node.children[2];
 		let eleAuthor = node.children[3];
-		view.showEditInputs(node, eleActions, eleTitle, eleText, eleAuthor, isNew);
+		view.showEditInputs(node, eleActions, eleTitle, eleText, eleAuthor, mode);
 	},
 	deleteCard: function(idx) {
 		let cardId = deck.cards[idx].id;
@@ -145,7 +152,7 @@ let handlers = {
 		view.showPage(view.currentPage+1, view.currentMode);
 	},
 	cancelEdit: function(idx) {
-		view.showCard(idx, 'editDel');
+		view.showCard(idx, 'editDel', view.currentMode);
 	},
 	saveEdit: function(idx, title, text) {
 		let cardId = deck.cards[idx].id;
@@ -155,8 +162,8 @@ let handlers = {
 		deck.deleteCard(0, idx, true);
 		view.showPage(1);
 	},
-	saveNewCard: function(idx, title, text, author) {
-		deck.addCard(idx, title, text, author);
+	saveNewCard: function(title, text, author) {
+		deck.addCard(title, text, author);
 	}
 };
 
@@ -164,27 +171,32 @@ let view = {
 	cardsPerPage: 3,
 	currentPage: 1,
 	currentMode: deck.modes['view'],
-	makeCard: function(idx, actionGroup) {
+	makeCard: function(idx, actionGroup, mode) {
 		let eleChild = document.createElement('div');
 		eleChild.setAttribute('class', 'child');
 		eleChild.setAttribute('id', idx);
 		let eleImg = document.createElement('div');
 		eleImg.setAttribute('class', 'img');
 		let eleSrc = document.createElement('img');
+		mode === deck.modes.new ? eleSrc.setAttribute('src', deck.appconst.image_add_url) :
 		eleSrc.setAttribute('src', deck.cards[idx].image_url);
 		let eleInnerChild = document.createElement('div');
 		eleInnerChild.setAttribute('class', 'child-inner');
 		let eleTitle = document.createElement('h3');
+		mode === deck.modes.new ? eleTitle.innerHTML = deck.new.title :
 		eleTitle.innerHTML = deck.cards[idx].title;
 		let eleText = document.createElement('p');
+		mode === deck.modes.new ? eleText.innerHTML = deck.new.text :
 		eleText.innerHTML = deck.cards[idx].text;
 		let eleAuthor = document.createElement('p');
 		eleAuthor.setAttribute('class', 'author');
+		mode === deck.modes.new ? eleAuthor.innerHTML = '- ' + deck.new.author :
 		eleAuthor.innerHTML = '- ' + deck.cards[idx].author;
-//		let eleLinkUl = document.createElement('ul');
-//		eleLinkUl.innerHTML = this.createCardActionLinks(actionGroup);
+		let eleLinkUl = document.createElement('ul');
+		if (mode !== deck.modes.new) eleLinkUl.setAttribute('class', 'hide-card-links');
+		eleLinkUl.innerHTML = this.createCardActionLinks(actionGroup);
 		eleImg.appendChild(eleSrc);
-//		eleInnerChild.appendChild(eleLinkUl);
+		eleInnerChild.appendChild(eleLinkUl);
 		eleInnerChild.appendChild(eleTitle);
 		eleInnerChild.appendChild(eleText);
 		eleInnerChild.appendChild(eleAuthor);
@@ -193,39 +205,75 @@ let view = {
 
 		return eleChild;
 	},
-//	showCard: function(idx, actionGroup) {
-//		let divElm = document.getElementById('main');
-//		divElm.replaceChild(this.makeCard(idx, actionGroup), document.getElementById(idx));
-//	},
-	showPage: function(page) {
+	showCard: function(idx, actionGroup, mode) {
+		let divElm = document.getElementById('main');
+		if (mode === deck.modes.new) {
+			divElm.appendChild(this.makeCard(idx, actionGroup, mode));
+		} else if (mode === deck.modes['edit']) {
+			divElm.replaceChild(this.makeCard(idx, actionGroup), document.getElementById(idx));
+			let elmUl = document.getElementsByClassName('hide-card-links');
+				//necessary because the num of ul elments decrases with each iteration
+			let numElm = elmUl.length;
+			for (let j = 0; j < numElm; j++) {
+				/* always at position 0 b/c each iteration
+				pushses the next elm to position 0 */
+				elmUl[0].removeAttribute('class');
+			}
+		}
+	},
+	showNewPage: function(mode) {
+		document.getElementById('main').innerHTML = '';
+		this.showTitle(mode);
+		this.showNavBar(mode);
+		this.showCard(0, 'newCard', mode);
+	},
+	showPage: function(page, mode) {
 		this.currentPage = page;
-//		this.currentMode = mode;
-		this.showTitle(this.currentMode);
-		this.showNavBar(this.currentMode);
+		this.showTitle(mode);
+		this.showNavBar(mode);
 //		this.showPageInfo(this.currentPage);
 //		this.showPrevLink(this.currentPage);
 //		this.showNextLink(this.currentPage);
 		//take a async break btwn each image http request
-		this.showCards(page);
+		this.showCards(page, mode);
 	},
 //	createCardActionLinks: function(type) {
 //		let eleLinks = '';
 //		if (type === 'editDel') {
 //			eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
-//		} else if (type === 'cancelSave') {
-//			eleLinks = '<li class="cancel-links">✕ Cancel</li><li class="save-links">✓ Save</li>';
 //		} else if (type === 'newCard') {
 //			eleLinks = '<li class="newcard-cancel-links">✕ Cancel</li><li class="newcard-save-links">✓ Save</li>';
 //		}
 //		return eleLinks;
 //	},
-	showCards: async function (page) {
+	createCardActionLinks: function(type) {
+		let eleLinks = '';
+		if (type === 'editDel') {
+			eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
+		} else if (type === 'cancelSave') {
+			eleLinks = '<li class="cancel-links">✕ Cancel</li><li class="save-links">✓ Save</li>';
+		} else if (type === 'newCard') {
+			eleLinks = '<li class="newcard-save-links">✓ Save</li>';
+		}
+		return eleLinks;
+	},
+	showCards: async function (page, mode) {
 		let eleMain = document.querySelector('#main');
 		eleMain.innerHTML = '';
-		for (var i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
+		for (let i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
     		if (deck.cards[i]) {
 				eleMain.appendChild(this.makeCard(i,'editDel'));
 				await deck.takeNap(500);
+			}
+		}
+		if (mode === deck.modes['edit']) {
+			let elmUl = document.getElementsByClassName('hide-card-links');
+			//necessary because the num of ul elments decrases with each iteration
+			let numElm = elmUl.length;
+			for (let j = 0; j < numElm; j++) {
+				/* always at position 0 b/c each iteration
+				pushses the next elm to position 0 */
+				elmUl[0].removeAttribute('class');
 			}
 		}
 	},
@@ -234,16 +282,13 @@ let view = {
 		eleHeader.innerHTML = pageTitle;
 	},
 	showNavBar: function(mode) {
-		if (mode === deck.modes['view']) {
-		let elmUlNumChildren = document.querySelector('nav').firstElementChild.childElementCount;
-		this.showPageInfo(this.currentPage);
-		this.showPrevLink(this.currentPage);
-		if (elmUlNumChildren === 3) this.showModeLinks(mode);
-		this.showNextLink(this.currentPage);
-		} else if (mode === deck.modes['edit']) {
-		// edit mode
-		} else {
-		// new mode
+		if (mode === deck.modes['new']) {
+			this.showModeLinks(mode);
+		} else  {
+			this.showPageInfo(this.currentPage);
+			this.showPrevLink(this.currentPage);
+			this.showModeLinks(mode);
+			this.showNextLink(this.currentPage);
 		}
 	},
 	showPageInfo: function(page) {
@@ -256,31 +301,18 @@ let view = {
 			document.querySelector('#prev-link').removeAttribute('style')
 	},
 	showModeLinks: function(mode) {
-		let elmNavUl = document.querySelector('nav').firstElementChild;
-		let elmBackLi = document.createElement('li');
-			elmBackLi.setAttribute('class', 'back-link');
-			elmBackLi.innerHTML = '↺ Back';
-		if (mode === deck.modes['view']) {
-			let elmNewLi = document.createElement('li');
-			elmNewLi.setAttribute('class', 'new-link');
-			elmNewLi.innerHTML = '+ Add Card';
-			let elmEditLi = document.createElement('li');
-			elmEditLi.setAttribute('class', 'edit-link');
-			elmEditLi.innerHTML = '✎ Edit Cards';
-			elmNavUl.insertBefore(elmNewLi, elmNavUl.children[2]);
-			elmNavUl.insertBefore(elmEditLi, elmNavUl.children[3]);
-		} else if (mode === deck.modes['edit']) {
-			let elmSaveEditsLi = document.createElement('li');
-			elmSaveEditsLi.setAttribute('class', 'save-alledits-link');
-			elmSaveEditsLi.innerHTML = '✎ Save All Edits';
-			elmNavUl.insertBefore(elmBackLi, elmNavUl.children[2]);
-			elmNavUl.insertBefore(elmSaveEditsLi, elmNavUl.children[3]);
+		if (mode === deck.modes['edit']) {
+			document.getElementById('card-demo').setAttribute('class', 'active');
+			document.getElementById('add-card').setAttribute('class', 'active');
+			document.getElementById('edit-cards').removeAttribute('class');
+		} else if (mode === deck.modes['new']) {
+			document.getElementById('card-demo').setAttribute('class', 'active');
+			document.getElementById('add-card').removeAttribute('class');
+			document.getElementById('edit-cards').setAttribute('class', 'active');
 		} else {
-			let elmSaveNew = document.createElement('li');
-			elmSaveNew.setAttribute('class', 'save-allnewcards-link');
-			elmSaveNew.innerHTML = '✐ Save All Cards';
-			elmNavUl.insertBefore(elmBackLi, elmNavUl.children[2]);
-			elmNavUl.insertBefore(elmSaveNew, elmNavUl.children[3]);
+			document.getElementById('card-demo').removeAttribute('class');
+			document.getElementById('add-card').setAttribute('class', 'active');
+			document.getElementById('edit-cards').setAttribute('class', 'active');
 		}
 	},
 	showNextLink: function(page) {
@@ -288,21 +320,19 @@ let view = {
 			document.querySelector('#next-link').style.visibility = "hidden" :
 			document.querySelector('#next-link').removeAttribute('style')
 	},
-	showEditInputs: function(node, eleActions, eleTitle, eleText, eleAuthor, isNew) {
-
+	showEditInputs: function(node, eleActions, eleTitle, eleText, eleAuthor, mode) {
 		let inputTitle = document.createElement('input');
 		inputTitle.setAttribute('type', 'text');
 		let areaText = document.createElement('textarea');
 		let inputAuthor = document.createElement('input');
 		inputAuthor.setAttribute('type', 'text');
 
-		if (isNew) {
-			inputTitle.placeholder = deck.cards[0].title;
+		if (mode === deck.modes.new) {
+			inputTitle.placeholder = 'Card title';
 			inputTitle.size = 32;
-			areaText.placeholder = deck.cards[0].text;
-			inputAuthor.placeholder = deck.cards[0].author;
+			areaText.placeholder = 'A few sentences. Be creative, be yourself. This is the easy part';
+			inputAuthor.placeholder = 'Name or handle';
 
-			eleActions.innerHTML = this.createCardActionLinks('newCard');
 			node.replaceChild(inputTitle, eleTitle);
 			node.replaceChild(areaText, eleText);
 			node.replaceChild(inputAuthor, eleAuthor);
@@ -329,13 +359,15 @@ let view = {
 				handlers.prevPage();
 			} else if (navElementClicked.id === 'next-link') {
 				handlers.nextPage();
-			} else if (navElementClicked.className === 'new-link') {
-				title = 'Card title'
-				text = 'A few sentences. Be creative, be yourself. This is the easy part'
-				author = 'Name or handle'
-				handlers.addCard(title, text, author);
-			} else if (navElementClicked.className === 'edit-link') {
-
+			} else if (navElementClicked.id === 'add-card') {
+//				title = 'Card title'
+//				text = 'A few sentences. Be creative, be yourself. This is the easy part'
+//				author = 'Name or handle'
+				handlers.switchMode(view.currentPage, deck.modes.new);
+			} else if (navElementClicked.id === 'edit-cards') {
+				handlers.switchMode(view.currentPage, deck.modes.edit);
+			} else if (navElementClicked.id === 'card-demo') {
+				handlers.switchMode(view.currentPage, deck.modes.view);
 			}
 		});
 		let cardElements = document.querySelector('#main');
@@ -363,7 +395,7 @@ let view = {
 				title = cardElmClicked.parentNode.parentNode.childNodes[1].value;
 				text = cardElmClicked.parentNode.parentNode.childNodes[2].value;
 				author = cardElmClicked.parentNode.parentNode.childNodes[3].value;
-				handlers.saveNewCard(cardIdx, title, text, author);
+				handlers.saveNewCard(title, text, author);
 			}
 		});
 	}
