@@ -9,19 +9,20 @@ body {
 	padding-bottom: 50px;
 }
 
-nav, mode {
+nav {
 	font-family: 'Patua One', cursive;
-	text-align: center;
 	white-space: nowrap;
 }
 
-nav ul, mode ul {
-	display: inline;
+nav ul {
+	text-align: center;
+	margin-left: -2.5rem;
 }
 
-nav li, mode li {
+nav li {
 	display: inline-block;
-	padding-right: 2rem;
+	padding-right: .5rem;
+	padding-left: .5rem;
 }
 
 p {
@@ -63,6 +64,10 @@ input[type=text]:focus, textarea:focus {
     border: 2px solid #999;
 }
 
+.divider {
+	color: #d3d3d3;
+}
+
 .none {
 	display: none;
 }
@@ -78,6 +83,8 @@ input[type=text]:focus, textarea:focus {
 .active {
     color: #008CBA;
     text-decoration: none;
+	-webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
 }
 
 .active:hover {
@@ -89,7 +96,6 @@ input[type=text]:focus, textarea:focus {
 .delete-links,
 .cancel-links,
 .save-links,
-.newcard-cancel-links,
 .newcard-save-links {
 	font-family: 'Patua One', cursive;
     color: #008CBA;
@@ -103,19 +109,9 @@ input[type=text]:focus, textarea:focus {
 .delete-links:hover,
 .cancel-links:hover,
 .save-links:hover,
-.newcard-cancel-links:hover,
 .newcard-save-links:hover {
 	color: #6cd7f7;
 	cursor: pointer;
-}
-
-.child-inner ul {
-	text-align: right;
-}
-
-.child-inner li {
-	display: inline-block;
-	padding-left: 2rem;
 }
 
 .container {
@@ -125,6 +121,28 @@ input[type=text]:focus, textarea:focus {
 	flex-flow: row wrap;
 	justify-content: center;
 
+}
+
+.child {
+	margin: 1rem 1rem 1rem 1rem;
+	display: inline-block;
+	background-color: white;
+	width: 300px;
+	border-bottom: 2px solid #e3e3e3;
+}
+
+.child-inner {
+	padding: 0 1.5rem 1rem 1.5rem;
+}
+
+.child-inner ul {
+	text-align: right;
+}
+
+.child-inner li {
+	text-align: right;
+	display: inline;
+	padding-left: 1.5rem;
 }
 
 .author {
@@ -137,14 +155,3 @@ input[type=text]:focus, textarea:focus {
 	font-size: 150%;
 }
 
-.child {
-	margin: 3rem 1rem 1rem 1rem;
-	display: inline-block;
-	background-color: white;
-	width: 300px;
-	border-bottom: 2px solid #e3e3e3;
-}
-
-.child-inner {
-	padding: 0 1.5rem 1rem 1.5rem;
-}

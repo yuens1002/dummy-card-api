@@ -283,8 +283,14 @@ let view = {
 	},
 	showNavBar: function(mode) {
 		if (mode === deck.modes['new']) {
+			document.getElementById('page-info').setAttribute('class', 'none');
+			document.getElementById('prev-link').setAttribute('class', 'none');
+			document.getElementById('next-link').setAttribute('class', 'none');
 			this.showModeLinks(mode);
 		} else  {
+			document.getElementById('page-info').setAttribute('class', 'page-info');
+			document.getElementById('prev-link').setAttribute('class', 'active');
+			document.getElementById('next-link').setAttribute('class', 'active');
 			this.showPageInfo(this.currentPage);
 			this.showPrevLink(this.currentPage);
 			this.showModeLinks(mode);
