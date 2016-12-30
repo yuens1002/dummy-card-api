@@ -131,6 +131,7 @@ input[type=text]:focus, textarea:focus {
 	background-color: white;
 	width: 300px;
 	border-bottom: 2px solid #e3e3e3;
+	box-shadow: 5px 3px 10px #eaeaea;
 }
 
 .child-inner {
