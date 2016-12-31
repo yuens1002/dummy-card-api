@@ -139,7 +139,9 @@ let handlers = {
 		let eleTitle = node.children[1];
 		let eleText = node.children[2];
 		let eleAuthor = node.children[3];
+
 		view.showEditInputs(node, eleActions, eleTitle, eleText, eleAuthor, mode);
+
 	},
 	deleteCard: function(idx) {
 		let cardId = deck.cards[idx].id;
@@ -207,18 +209,14 @@ let view = {
 	},
 	showCard: function(idx, actionGroup, mode) {
 		let divElm = document.getElementById('main');
-		if (mode === deck.modes.new) {
+		if (mode === deck.modes['new']) {
 			divElm.appendChild(this.makeCard(idx, actionGroup, mode));
+			document.getElementById(idx).classList.add('fadein');
 		} else if (mode === deck.modes['edit']) {
 			divElm.replaceChild(this.makeCard(idx, actionGroup), document.getElementById(idx));
-			let elmUl = document.getElementsByClassName('hide-card-links');
-				//necessary because the num of ul elments decrases with each iteration
-			let numElm = elmUl.length;
-			for (let j = 0; j < numElm; j++) {
-				/* always at position 0 b/c each iteration
-				pushses the next elm to position 0 */
-				elmUl[0].removeAttribute('class');
-			}
+			document.getElementById(idx).classList.add('fadein');
+			document.getElementById(idx).getElementsByTagName('ul')[0].removeAttribute('class');
+
 		}
 	},
 	showNewPage: function(mode) {
@@ -263,19 +261,25 @@ let view = {
 		for (let i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
     		if (deck.cards[i]) {
 				eleMain.appendChild(this.makeCard(i,'editDel'));
-				await deck.takeNap(500);
+				eleMain.lastChild.classList.add('moveRTL');
+				await deck.takeNap(550);
+				if (mode === deck.modes['edit']) {
+					document.querySelector('.hide-card-links')
+					.removeAttribute('class');
+				}
+
 			}
 		}
-		if (mode === deck.modes['edit']) {
-			let elmUl = document.getElementsByClassName('hide-card-links');
-			//necessary because the num of ul elments decrases with each iteration
-			let numElm = elmUl.length;
-			for (let j = 0; j < numElm; j++) {
-				/* always at position 0 b/c each iteration
-				pushses the next elm to position 0 */
-				elmUl[0].removeAttribute('class');
-			}
-		}
+//		if (mode === deck.modes['edit']) {
+//			let elmUl = document.getElementsByClassName('hide-card-links');
+//			//necessary because the num of ul elments decrases with each iteration
+//			let numElm = elmUl.length;
+//			for (let j = 0; j < numElm; j++) {
+//				/* always at position 0 b/c each iteration
+//				pushes the next elm to position 0 */
+//				elmUl[0].removeAttribute('class');
+//			}
+//		}
 	},
 	showTitle: function(pageTitle) {
 		let eleHeader = document.querySelector('header');
@@ -333,7 +337,7 @@ let view = {
 		let inputAuthor = document.createElement('input');
 		inputAuthor.setAttribute('type', 'text');
 
-		if (mode === deck.modes.new) {
+		if (mode === deck.modes['new']) {
 			inputTitle.placeholder = 'Card title';
 			inputTitle.size = 32;
 			areaText.placeholder = 'A few sentences. Be creative, be yourself. This is the easy part';
@@ -342,6 +346,7 @@ let view = {
 			node.replaceChild(inputTitle, eleTitle);
 			node.replaceChild(areaText, eleText);
 			node.replaceChild(inputAuthor, eleAuthor);
+
 		} else {
 			inputTitle.value = node.children[1].innerHTML;
 			inputTitle.size = 32;

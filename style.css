@@ -134,6 +134,67 @@ input[type=text]:focus, textarea:focus {
 	box-shadow: 5px 3px 10px #eaeaea;
 }
 
+.child.moveRTL {
+	position: relative;
+    animation-name: RTL;
+    animation-duration: 3.5s;
+    animation-timing-function: ease;
+	animation-fill-mode: forwards;
+    /* animation-direction: alternate; */
+}
+
+/* Standard syntax */
+@keyframes RTL {
+	from {
+		left: 100%;
+		opacity: 0;
+	}
+	to {
+		left: 0;
+		opacity: 1;
+	}
+}
+
+.child.moveLTR {
+	position: relative;
+    animation-name: LTR;
+    animation-duration: 3.5s;
+    animation-timing-function: ease;
+	animation-fill-mode: forwards;
+    /* animation-direction: alternate; */
+}
+
+/* Standard syntax */
+@keyframes LTR {
+	from {
+		right: 100%;
+		opacity: 0;
+	}
+	to {
+		right: 0;
+		opacity: 1;
+	}
+}
+
+.child.fadein {
+	position: relative;
+    animation-name: duration;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+	animation-fill-mode: forwards;
+    /* animation-direction: alternate; */
+}
+
+/* Standard syntax */
+@keyframes duration {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
 .child-inner {
 	padding: 0 1.5rem 1rem 1.5rem;
 }

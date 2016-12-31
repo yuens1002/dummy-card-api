@@ -1,0 +1,52 @@
+.child.TranMove {
+	position: relative;
+    animation-name: example;
+    animation-duration: 2s;
+    animation-timing-function: ease-in;
+    animation-delay: 0;
+	animation-fill-mode: forwards;
+    /* animation-direction: alternate; */
+}
+
+/* Standard syntax */
+@keyframes example {
+	from {left: 100%; opacity: 0;}
+	to {left: 0; opacity: 1}
+}
+
+.play {
+	z-index: 999;
+	position: relative;
+	left: 0;
+	width: 100px;
+	height: 100px;
+	background-color: #333;
+  	transition: all 2.5s ease;	
+}
+
+.play.animate {
+	left: 50px;
+	background-color: #F472D0;
+}
+
+
+
+.container {
+	z-index: 10000;
+	width: 100%;
+	display: flex;
+	display: inline-flex;
+	flex-flow: row wrap;
+	justify-content: center;
+
+}
+
+.child {
+	z-index: 10000;
+	margin: 1rem 1rem 1rem 1rem;
+	display: inline-block;
+	background-color: white;
+	width: 300px;
+	border-bottom: 2px solid #e3e3e3;
+	box-shadow: 5px 3px 10px #eaeaea;
+}
