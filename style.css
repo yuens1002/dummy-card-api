@@ -11,6 +11,15 @@ body {
 	padding-bottom: 50px;
 }
 
+label:first-child {
+	padding-top: 1rem;
+}
+
+label {
+	display: block;
+	font-size: 90%;
+	padding-left: 0.7rem;
+}
 nav {
 	font-family: 'Patua One', cursive;
 	white-space: nowrap;
@@ -159,7 +168,7 @@ input[type=text]:focus, textarea:focus {
 	position: relative;
     animation-name: LTR;
     animation-duration: 3.5s;
-    animation-timing-function: ease;
+    animation-timing-function: linear;
 	animation-fill-mode: forwards;
     /* animation-direction: alternate; */
 }
@@ -179,8 +188,8 @@ input[type=text]:focus, textarea:focus {
 .child.fadein {
 	position: relative;
     animation-name: duration;
-    animation-duration: 1s;
-    animation-timing-function: ease;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
 	animation-fill-mode: forwards;
     /* animation-direction: alternate; */
 }

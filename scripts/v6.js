@@ -126,12 +126,7 @@ let handlers = {
 //	},
 	switchMode: function(page, mode) {
 		deck.setMode(mode);
-		mode === deck.modes.new ? (
-			view.showNewPage(mode),
-			this.editCard(0, mode)
-		    ) : (
-			view.showPage(page, mode)
-		);
+		mode === deck.modes['new'] ? view.showNewPage(mode) : view.showPage(page, mode)
 	},
 	editCard: function(idx, mode) {
 		let node = document.getElementById(idx).children[1];
@@ -160,10 +155,10 @@ let handlers = {
 		let cardId = deck.cards[idx].id;
 		deck.editCard(cardId, title, text, idx);
 	},
-	cancelNewCard: function(idx) {
-		deck.deleteCard(0, idx, true);
-		view.showPage(1);
-	},
+//	cancelNewCard: function(idx) {
+//		deck.deleteCard(0, idx, true);
+//		view.showPage(1);
+//	},
 	saveNewCard: function(title, text, author) {
 		deck.addCard(title, text, author);
 	}
@@ -173,30 +168,26 @@ let view = {
 	cardsPerPage: 3,
 	currentPage: 1,
 	currentMode: deck.modes['view'],
-	makeCard: function(idx, actionGroup, mode) {
+	makeCard: function(idx, actionGroup) {
 		let eleChild = document.createElement('div');
 		eleChild.setAttribute('class', 'child');
 		eleChild.setAttribute('id', idx);
 		let eleImg = document.createElement('div');
 		eleImg.setAttribute('class', 'img');
 		let eleSrc = document.createElement('img');
-		mode === deck.modes.new ? eleSrc.setAttribute('src', deck.appconst.image_add_url) :
 		eleSrc.setAttribute('src', deck.cards[idx].image_url);
 		let eleInnerChild = document.createElement('div');
 		eleInnerChild.setAttribute('class', 'child-inner');
 		let eleTitle = document.createElement('h3');
-		mode === deck.modes.new ? eleTitle.innerHTML = deck.new.title :
 		eleTitle.innerHTML = deck.cards[idx].title;
 		let eleText = document.createElement('p');
-		mode === deck.modes.new ? eleText.innerHTML = deck.new.text :
 		eleText.innerHTML = deck.cards[idx].text;
 		let eleAuthor = document.createElement('p');
 		eleAuthor.setAttribute('class', 'author');
-		mode === deck.modes.new ? eleAuthor.innerHTML = '- ' + deck.new.author :
 		eleAuthor.innerHTML = '- ' + deck.cards[idx].author;
 		let eleLinkUl = document.createElement('ul');
-		if (mode !== deck.modes.new) eleLinkUl.setAttribute('class', 'hide-card-links');
 		eleLinkUl.innerHTML = this.createCardActionLinks(actionGroup);
+		eleLinkUl.setAttribute('class', 'hide-card-links');
 		eleImg.appendChild(eleSrc);
 		eleInnerChild.appendChild(eleLinkUl);
 		eleInnerChild.appendChild(eleTitle);
@@ -207,43 +198,55 @@ let view = {
 
 		return eleChild;
 	},
-	showCard: function(idx, actionGroup, mode) {
-		let divElm = document.getElementById('main');
-		if (mode === deck.modes['new']) {
-			divElm.appendChild(this.makeCard(idx, actionGroup, mode));
-			document.getElementById(idx).classList.add('fadein');
-		} else if (mode === deck.modes['edit']) {
-			divElm.replaceChild(this.makeCard(idx, actionGroup), document.getElementById(idx));
-			document.getElementById(idx).classList.add('fadein');
-			document.getElementById(idx).getElementsByTagName('ul')[0].removeAttribute('class');
+	makeNewCard: function(actionGroup) {
+		let eleChild = document.createElement('div');
+		eleChild.setAttribute('class', 'child');
 
-		}
+		let eleImg = document.createElement('div');
+		eleImg.setAttribute('class', 'img');
+		let eleSrc = document.createElement('img');
+		eleSrc.setAttribute('src', deck.appconst.image_add_url)
+		eleImg.appendChild(eleSrc);
+		eleChild.appendChild(eleImg);
+
+		let labelTitle = document.createElement('label');
+		labelTitle.innerHTML = 'Title';
+		let inputTitle = document.createElement('input');
+		inputTitle.setAttribute('type', 'text');
+		inputTitle.setAttribute('name', 'title');
+		inputTitle.placeholder = 'Card title';
+		inputTitle.size = 32;
+
+		let labelText = document.createElement('label');
+		labelText.innerHTML = 'Paragraph';
+		let areaText = document.createElement('textarea');
+		inputTitle.setAttribute('name', 'text');
+		areaText.placeholder = 'A few sentences. Be creative, be yourself. This is the easy part';
+
+		let labelAuthor = document.createElement('label');
+		labelAuthor.innerHTML = 'Name or Handle';
+		let inputAuthor = document.createElement('input');
+		inputAuthor.setAttribute('type', 'text');
+		inputTitle.setAttribute('name', 'author');
+		inputAuthor.placeholder = 'Name or handle';
+
+		let eleInnerChild = document.createElement('div');
+		eleInnerChild.setAttribute('class', 'child-inner');
+		eleInnerChild.appendChild(labelTitle);
+		eleInnerChild.appendChild(inputTitle);
+		eleInnerChild.appendChild(labelText);
+		eleInnerChild.appendChild(areaText);
+		eleInnerChild.appendChild(labelAuthor);
+		eleInnerChild.appendChild(inputAuthor);
+
+		let eleLinkUl = document.createElement('ul');
+		eleLinkUl.innerHTML = this.createCardActionLinks(actionGroup);
+		eleInnerChild.appendChild(eleLinkUl);
+
+		eleChild.appendChild(eleInnerChild);
+
+		return eleChild;
 	},
-	showNewPage: function(mode) {
-		document.getElementById('main').innerHTML = '';
-		this.showTitle(mode);
-		this.showNavBar(mode);
-		this.showCard(0, 'newCard', mode);
-	},
-	showPage: function(page, mode) {
-		this.currentPage = page;
-		this.showTitle(mode);
-		this.showNavBar(mode);
-//		this.showPageInfo(this.currentPage);
-//		this.showPrevLink(this.currentPage);
-//		this.showNextLink(this.currentPage);
-		//take a async break btwn each image http request
-		this.showCards(page, mode);
-	},
-//	createCardActionLinks: function(type) {
-//		let eleLinks = '';
-//		if (type === 'editDel') {
-//			eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
-//		} else if (type === 'newCard') {
-//			eleLinks = '<li class="newcard-cancel-links">✕ Cancel</li><li class="newcard-save-links">✓ Save</li>';
-//		}
-//		return eleLinks;
-//	},
 	createCardActionLinks: function(type) {
 		let eleLinks = '';
 		if (type === 'editDel') {
@@ -254,6 +257,26 @@ let view = {
 			eleLinks = '<li class="newcard-save-links">✓ Save</li>';
 		}
 		return eleLinks;
+	},
+	showNewPage: function(mode) {
+		let elmMain = document.getElementById('main');
+		elmMain.innerHTML = '';
+		this.showTitle(mode);
+		this.showNavBar(mode);
+		elmMain.appendChild(this.makeNewCard('newCard'));
+		document.querySelector('.child').classList.add('fadein');
+	},
+	showCard: function(idx, actionGroup) {
+		let divElm = document.getElementById('main');
+		divElm.replaceChild(this.makeCard(idx, actionGroup), document.getElementById(idx));
+		document.getElementById(idx).classList.add('fadein');
+		document.getElementById(idx).getElementsByTagName('ul')[0].removeAttribute('class');
+	},
+	showPage: function(page, mode) {
+		this.currentPage = page;
+		this.showTitle(mode);
+		this.showNavBar(mode);
+		this.showCards(page, mode);
 	},
 	showCards: async function (page, mode) {
 		let eleMain = document.querySelector('#main');
@@ -267,19 +290,8 @@ let view = {
 					document.querySelector('.hide-card-links')
 					.removeAttribute('class');
 				}
-
 			}
 		}
-//		if (mode === deck.modes['edit']) {
-//			let elmUl = document.getElementsByClassName('hide-card-links');
-//			//necessary because the num of ul elments decrases with each iteration
-//			let numElm = elmUl.length;
-//			for (let j = 0; j < numElm; j++) {
-//				/* always at position 0 b/c each iteration
-//				pushes the next elm to position 0 */
-//				elmUl[0].removeAttribute('class');
-//			}
-//		}
 	},
 	showTitle: function(pageTitle) {
 		let eleHeader = document.querySelector('header');
@@ -330,32 +342,20 @@ let view = {
 			document.querySelector('#next-link').style.visibility = "hidden" :
 			document.querySelector('#next-link').removeAttribute('style')
 	},
-	showEditInputs: function(node, eleActions, eleTitle, eleText, eleAuthor, mode) {
+	showEditInputs: function(node, eleActions, eleTitle, eleText, eleAuthor) {
 		let inputTitle = document.createElement('input');
 		inputTitle.setAttribute('type', 'text');
 		let areaText = document.createElement('textarea');
 		let inputAuthor = document.createElement('input');
 		inputAuthor.setAttribute('type', 'text');
 
-		if (mode === deck.modes['new']) {
-			inputTitle.placeholder = 'Card title';
-			inputTitle.size = 32;
-			areaText.placeholder = 'A few sentences. Be creative, be yourself. This is the easy part';
-			inputAuthor.placeholder = 'Name or handle';
+		inputTitle.value = node.children[1].innerHTML;
+		inputTitle.size = 32;
+		areaText.value = node.children[2].innerHTML;
 
-			node.replaceChild(inputTitle, eleTitle);
-			node.replaceChild(areaText, eleText);
-			node.replaceChild(inputAuthor, eleAuthor);
-
-		} else {
-			inputTitle.value = node.children[1].innerHTML;
-			inputTitle.size = 32;
-			areaText.value = node.children[2].innerHTML;
-
-			eleActions.innerHTML = this.createCardActionLinks('cancelSave');
-			node.replaceChild(inputTitle, eleTitle);
-			node.replaceChild(areaText, eleText);
-		}
+		eleActions.innerHTML = this.createCardActionLinks('cancelSave');
+		node.replaceChild(inputTitle, eleTitle);
+		node.replaceChild(areaText, eleText);
 	},
 	setupEventListeners: function() {
 		deck.fetchCards();
@@ -371,9 +371,6 @@ let view = {
 			} else if (navElementClicked.id === 'next-link') {
 				handlers.nextPage();
 			} else if (navElementClicked.id === 'add-card') {
-//				title = 'Card title'
-//				text = 'A few sentences. Be creative, be yourself. This is the easy part'
-//				author = 'Name or handle'
 				handlers.switchMode(view.currentPage, deck.modes.new);
 			} else if (navElementClicked.id === 'edit-cards') {
 				handlers.switchMode(view.currentPage, deck.modes.edit);
