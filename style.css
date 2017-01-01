@@ -17,8 +17,9 @@ label:first-child {
 
 label {
 	display: block;
-	font-size: 90%;
+	font-size: 80%;
 	padding-left: 0.7rem;
+	padding-bottom: .3rem;
 }
 nav {
 	font-family: 'Patua One', cursive;
@@ -92,16 +93,18 @@ input[type=text]:focus, textarea:focus {
 }
 
 .active {
-    color: #008CBA;
-    text-decoration: none;
-	-webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
+    color: black;
 }
 
-.active:hover {
+.normal {
+    color: #008CBA;
+}
+
+.normal:hover {
     color: #6cd7f7;
 	cursor: pointer;
 }
+
 
 .edit-links,
 .delete-links,
@@ -114,7 +117,6 @@ input[type=text]:focus, textarea:focus {
 	-webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
 }
-
 
 .edit-links:hover,
 .delete-links:hover,
@@ -168,7 +170,7 @@ input[type=text]:focus, textarea:focus {
 	position: relative;
     animation-name: LTR;
     animation-duration: 3.5s;
-    animation-timing-function: linear;
+    animation-timing-function: ease;
 	animation-fill-mode: forwards;
     /* animation-direction: alternate; */
 }

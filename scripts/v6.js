@@ -285,7 +285,7 @@ let view = {
     		if (deck.cards[i]) {
 				eleMain.appendChild(this.makeCard(i,'editDel'));
 				eleMain.lastChild.classList.add('moveRTL');
-				await deck.takeNap(550);
+				await deck.takeNap(400);
 				if (mode === deck.modes['edit']) {
 					document.querySelector('.hide-card-links')
 					.removeAttribute('class');
@@ -305,8 +305,8 @@ let view = {
 			this.showModeLinks(mode);
 		} else  {
 			document.getElementById('page-info').setAttribute('class', 'page-info');
-			document.getElementById('prev-link').setAttribute('class', 'active');
-			document.getElementById('next-link').setAttribute('class', 'active');
+			document.getElementById('prev-link').setAttribute('class', 'normal');
+			document.getElementById('next-link').setAttribute('class', 'normal');
 			this.showPageInfo(this.currentPage);
 			this.showPrevLink(this.currentPage);
 			this.showModeLinks(mode);
@@ -324,17 +324,17 @@ let view = {
 	},
 	showModeLinks: function(mode) {
 		if (mode === deck.modes['edit']) {
-			document.getElementById('card-demo').setAttribute('class', 'active');
-			document.getElementById('add-card').setAttribute('class', 'active');
-			document.getElementById('edit-cards').removeAttribute('class');
+			document.getElementById('card-demo').setAttribute('class', 'normal');
+			document.getElementById('add-card').setAttribute('class', 'normal');
+			document.getElementById('edit-cards').setAttribute('class', 'active');
 		} else if (mode === deck.modes['new']) {
-			document.getElementById('card-demo').setAttribute('class', 'active');
-			document.getElementById('add-card').removeAttribute('class');
-			document.getElementById('edit-cards').setAttribute('class', 'active');
-		} else {
-			document.getElementById('card-demo').removeAttribute('class');
+			document.getElementById('card-demo').setAttribute('class', 'normal');
 			document.getElementById('add-card').setAttribute('class', 'active');
-			document.getElementById('edit-cards').setAttribute('class', 'active');
+			document.getElementById('edit-cards').setAttribute('class', 'normal');
+		} else {
+			document.getElementById('card-demo').setAttribute('class', 'active');
+			document.getElementById('add-card').setAttribute('class', 'normal');
+			document.getElementById('edit-cards').setAttribute('class', 'normal');
 		}
 	},
 	showNextLink: function(page) {
@@ -371,11 +371,11 @@ let view = {
 			} else if (navElementClicked.id === 'next-link') {
 				handlers.nextPage();
 			} else if (navElementClicked.id === 'add-card') {
-				handlers.switchMode(view.currentPage, deck.modes.new);
+				handlers.switchMode(1, deck.modes.new);
 			} else if (navElementClicked.id === 'edit-cards') {
-				handlers.switchMode(view.currentPage, deck.modes.edit);
+				handlers.switchMode(1, deck.modes.edit);
 			} else if (navElementClicked.id === 'card-demo') {
-				handlers.switchMode(view.currentPage, deck.modes.view);
+				handlers.switchMode(1, deck.modes.view);
 			}
 		});
 		let cardElements = document.querySelector('#main');
