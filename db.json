@@ -1,13 +1,6 @@
 {
   "cards": [
     {
-      "id": 1,
-      "title": "We are Humans",
-      "text": "We act like humans, we talk like humans, and we think like humans. And we call out anyone who does the opposite.",
-      "author": "António Capelo",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
       "id": 2,
       "title": "We work together",
       "text": "We insist on working collaborativelly. <bold>No rockstars</bold>. No departments. The whole owns the whole project together.",
@@ -34,20 +27,6 @@
       "author": "Sunny Yuen",
       "image_url": "http://lorempixel.com/300/150/",
       "id": 6
-    },
-    {
-      "title": "Multi-Media Vacation",
-      "text": "Tour of a beautiful resort unit, Interactive map and video of all resorts.",
-      "author": "Sunny Yuen",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 7
-    },
-    {
-      "title": "Let's try this again",
-      "author": "hohaasf",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 8,
-      "text": "this can't be left blank"
     }
   ]
 }

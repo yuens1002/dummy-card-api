@@ -85,7 +85,7 @@ let deck = {
 				title: title,
 				text: text
 			})
-		}).then(() => view.showCard(idx, 'editDel', view.currentMode))
+		}).then(() => view.showCard(idx, 'editDel'))
 	    .catch((err) => console.log(err));
 	},
 	saveCardToDb: function() {
@@ -128,14 +128,14 @@ let handlers = {
 		deck.setMode(mode);
 		mode === deck.modes['new'] ? view.showNewPage(mode) : view.showPage(page, mode)
 	},
-	editCard: function(idx, mode) {
+	editCard: function(idx) {
 		let node = document.getElementById(idx).children[1];
 		let eleActions = node.children[0];
 		let eleTitle = node.children[1];
 		let eleText = node.children[2];
 		let eleAuthor = node.children[3];
 
-		view.showEditInputs(node, eleActions, eleTitle, eleText, eleAuthor, mode);
+		view.showEditInputs(node, eleActions, eleTitle, eleText, eleAuthor, idx);
 
 	},
 	deleteCard: function(idx) {
@@ -149,7 +149,7 @@ let handlers = {
 		view.showPage(view.currentPage+1, view.currentMode);
 	},
 	cancelEdit: function(idx) {
-		view.showCard(idx, 'editDel', view.currentMode);
+		view.showCard(idx, 'editDel');
 	},
 	saveEdit: function(idx, title, text) {
 		let cardId = deck.cards[idx].id;
@@ -172,7 +172,7 @@ let view = {
 		constructor(idx) {
 			this.idx = idx;
 			this.elmLi =  document.createElement('li');
-			this.fnPath = 'view.setupEventListeners.';
+			this.fnPath = 'ddeck.';
 			this.links = {
 				control: {
 					prev: {
@@ -211,6 +211,10 @@ let view = {
 						save: {
 							fnName: 'saveEdit',
 							text: '✓ Save'
+						},
+						edit: {
+							fnName: 'editCard',
+							text: '✎ Edit Cards'
 						}
 					}
 				}
@@ -277,13 +281,21 @@ let view = {
 				name: this.idx,
 				onclick: this.onclickValue(this.links.menu.edit.delete.fnName)
 			});
-			return this.elmA;
+			return this.elmLi;
 		}
 		get saveEdit() {
 			this.makeLink(this.links.menu.edit.save.text, {
 				href: '#',
 				name: this.idx,
 				onclick: this.onclickValue(this.links.menu.edit.save.fnName)
+			});
+			return this.elmLi;
+		}
+		get editCard() {
+			this.makeLink(this.links.menu.edit.edit.text, {
+				href: '#',
+				name: this.idx,
+				onclick: this.onclickValue(this.links.menu.edit.edit.fnName)
 			});
 			return this.elmLi;
 		}
@@ -320,11 +332,8 @@ let view = {
 		let eleAuthor = document.createElement('p');
 		eleAuthor.setAttribute('class', 'author');
 		eleAuthor.innerHTML = '- ' + deck.cards[idx].author;
-		let eleLinkUl = document.createElement('ul');
-		eleLinkUl.innerHTML = this.createCardActionLinks(actionGroup);
-		eleLinkUl.setAttribute('class', 'hide-card-links');
 		eleImg.appendChild(eleSrc);
-		eleInnerChild.appendChild(eleLinkUl);
+		eleInnerChild.appendChild(this.createCardActionLinks(actionGroup, idx));
 		eleInnerChild.appendChild(eleTitle);
 		eleInnerChild.appendChild(eleText);
 		eleInnerChild.appendChild(eleAuthor);
@@ -355,14 +364,14 @@ let view = {
 		let labelText = document.createElement('label');
 		labelText.innerHTML = 'Paragraph';
 		let areaText = document.createElement('textarea');
-		inputTitle.setAttribute('name', 'text');
+		areaText.setAttribute('name', 'text');
 		areaText.placeholder = 'A few sentences. Be creative, be yourself. This is the easy part';
 
 		let labelAuthor = document.createElement('label');
 		labelAuthor.innerHTML = 'Name or Handle';
 		let inputAuthor = document.createElement('input');
 		inputAuthor.setAttribute('type', 'text');
-		inputTitle.setAttribute('name', 'author');
+		inputAuthor.setAttribute('name', 'author');
 		inputAuthor.placeholder = 'Name or handle';
 
 		let eleInnerChild = document.createElement('div');
@@ -374,24 +383,24 @@ let view = {
 		eleInnerChild.appendChild(labelAuthor);
 		eleInnerChild.appendChild(inputAuthor);
 
-		let eleLinkUl = document.createElement('ul');
-		eleLinkUl.innerHTML = this.createCardActionLinks(actionGroup);
-		eleInnerChild.appendChild(eleLinkUl);
-
+		eleInnerChild.appendChild(this.createCardActionLinks(actionGroup));
 		eleChild.appendChild(eleInnerChild);
 
 		return eleChild;
 	},
-	createCardActionLinks: function(type) {
-		let eleLinks = '';
+	createCardActionLinks: function(type, idx) {
+		let elmUlLinks = document.createElement('ul');
 		if (type === 'editDel') {
-			eleLinks = '<li class="edit-links">✎ Edit</li><li class="delete-links">✕ Delete</li>';
+			elmUlLinks.setAttribute('class', 'hide-card-links');
+			elmUlLinks.appendChild(new this.CreateLinkElm(idx).editCard);
+			elmUlLinks.appendChild(new this.CreateLinkElm(idx).deleteCard);
 		} else if (type === 'cancelSave') {
-			eleLinks = '<li class="cancel-links">✕ Cancel</li><li class="save-links">✓ Save</li>';
+			elmUlLinks.appendChild(new this.CreateLinkElm(idx).cancelEdit);
+			elmUlLinks.appendChild(new this.CreateLinkElm(idx).saveEdit);
 		} else if (type === 'newCard') {
-			eleLinks = '<li class="newcard-save-links">✓ Save</li>';
+			elmUlLinks.appendChild(new this.CreateLinkElm().saveNew);
 		}
-		return eleLinks;
+		return elmUlLinks;
 	},
 	showNewPage: function(mode) {
 		let elmMain = document.getElementById('main');
@@ -440,7 +449,8 @@ let view = {
 			elmUl.innerHTML = '<br><br><li id="page-info" class="page-info"></li>';
 			elmUl.appendChild(elmPrevLink);
 			elmUl.appendChild(elmNextLink);
-		} else if (mode === deck.modes['new']) {
+		}
+		if (mode === deck.modes['new']) {
 			document.getElementById('page-info').setAttribute('class', 'none');
 			document.getElementById('prev-link').setAttribute('class', 'none');
 			document.getElementById('next-link').setAttribute('class', 'none');
@@ -465,19 +475,25 @@ let view = {
 			document.querySelector('#prev-link').removeAttribute('style')
 	},
 	showModeLinks: function(mode) {
-//		if (document.querySelector('ul').childNodes.length === 0) {
-//			let elmUl = document.querySelector('ul');
-//			let elmPrevLink = new this.CreateLinkElm().prev;
-//			let elmNextLink = new this.CreateLinkElm().next;
-//			elmUl.innerHTML = '<br><br><li id="page-info" class="page-info"></li>';
-//			elmUl.appendChild(elmPrevLink);
-//			elmUl.appendChild(elmNextLink);
-//		}
 		if (document.querySelector('ul').childNodes.length === 5) {
 			let elmUl = document.querySelector('ul');
+			let elmCardDemoLink = new this.CreateLinkElm().view;
+			let elmAddCardLink = new this.CreateLinkElm().newCard;
+			let elmEditCardLink = new this.CreateLinkElm().edit;
+			let elmDiv1 = document.createElement('li');
+			elmDiv1.innerHTML = '|';
+			elmDiv1.setAttribute('class', 'divider');
+			let elmDiv2 = document.createElement('li');
+			elmDiv2.innerHTML = '|';
+			elmDiv2.setAttribute('class', 'divider');
 
-
-		} else if (mode === deck.modes['edit']) {
+			elmUl.insertBefore(elmEditCardLink, elmUl.firstChild);
+			elmUl.insertBefore(elmDiv2, elmUl.firstChild);
+			elmUl.insertBefore(elmAddCardLink, elmUl.firstChild);
+			elmUl.insertBefore(elmDiv1, elmUl.firstChild);
+			elmUl.insertBefore(elmCardDemoLink, elmUl.firstChild);
+		}
+		if (mode === deck.modes['edit']) {
 			document.getElementById('card-demo').setAttribute('class', 'normal');
 			document.getElementById('add-card').setAttribute('class', 'normal');
 			document.getElementById('edit-cards').setAttribute('class', 'active');
@@ -496,10 +512,12 @@ let view = {
 			document.querySelector('#next-link').style.visibility = "hidden" :
 			document.querySelector('#next-link').removeAttribute('style')
 	},
-	showEditInputs: function(node, eleActions, eleTitle, eleText, eleAuthor) {
+	showEditInputs: function(node, eleActions, eleTitle, eleText, eleAuthor, idx) {
 		let inputTitle = document.createElement('input');
 		inputTitle.setAttribute('type', 'text');
+		inputTitle.setAttribute('name', 'title');
 		let areaText = document.createElement('textarea');
+		areaText.setAttribute('name', 'text');
 		let inputAuthor = document.createElement('input');
 		inputAuthor.setAttribute('type', 'text');
 
@@ -507,61 +525,59 @@ let view = {
 		inputTitle.size = 32;
 		areaText.value = node.children[2].innerHTML;
 
-		eleActions.innerHTML = this.createCardActionLinks('cancelSave');
+//		eleActions = this.createCardActionLinks('cancelSave', idx);
+		node.replaceChild(this.createCardActionLinks('cancelSave', idx), eleActions);
 		node.replaceChild(inputTitle, eleTitle);
 		node.replaceChild(areaText, eleText);
-	},
-	setupEventListeners: function() {
-		deck.fetchCards();
-		let cardIdx = 0;
-		let title = '';
-		let text = '';
-		let author = '';
-		let navElements = document.querySelector('nav');
-		navElements.addEventListener('click', function(event) {
-			let navElementClicked = event.target;
-			if (navElementClicked.id === 'prev-link') {
-				handlers.prevPage();
-			} else if (navElementClicked.id === 'next-link') {
-				handlers.nextPage();
-			} else if (navElementClicked.id === 'add-card') {
-				handlers.switchMode(1, deck.modes.new);
-			} else if (navElementClicked.id === 'edit-cards') {
-				handlers.switchMode(1, deck.modes.edit);
-			} else if (navElementClicked.id === 'card-demo') {
-				handlers.switchMode(1, deck.modes.view);
-			}
-		});
-		let cardElements = document.querySelector('#main');
-		cardElements.addEventListener('click', function(event) {
-			let cardElmClicked = event.target;
-			if (cardElmClicked.className === 'delete-links') {
-				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
-				handlers.deleteCard(cardIdx);
-			} else if (cardElmClicked.className === 'edit-links') {
-				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
-				handlers.editCard(cardIdx);
-			} else if (cardElmClicked.className === 'cancel-links') {
-				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
-				handlers.cancelEdit(cardIdx);
-			} else if (cardElmClicked.className === 'save-links') {
-				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
-				title = cardElmClicked.parentNode.parentNode.childNodes[1].value;
-				text = cardElmClicked.parentNode.parentNode.childNodes[2].value;
-				handlers.saveEdit(cardIdx, title, text);
-			} else if (cardElmClicked.className === 'newcard-cancel-links') {
-				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
-				handlers.cancelNewCard(cardIdx);
-			} else if (cardElmClicked.className === 'newcard-save-links') {
-//				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
-				title = cardElmClicked.parentNode.parentNode.childNodes[1].value;
-				text = cardElmClicked.parentNode.parentNode.childNodes[2].value;
-				author = cardElmClicked.parentNode.parentNode.childNodes[3].value;
-				handlers.saveNewCard(title, text, author);
-			}
-		});
 	}
 };
-view.setupEventListeners();
-window.ddeck = view
+
+let events = {
+	fields: {
+		title: '',
+		text: '',
+		author: ''
+	},
+	init: function() {
+		deck.fetchCards();
+	},
+	view: function() {
+		handlers.switchMode(1, deck.modes.view);
+	},
+	newCard: function() {
+		handlers.switchMode(1, deck.modes.new);
+	},
+	edit: function() {
+		handlers.switchMode(1, deck.modes.edit);
+	},
+	prev: function() {
+		handlers.prevPage();
+	},
+	next: function() {
+		handlers.nextPage();
+	},
+	saveNew: function() {
+		this.fields.title = document.querySelector('[name="title"]').value;
+		this.fields.text = document.querySelector('[name="text"]').value;
+		this.fields.author = document.querySelector('[name="author"]').value;
+		handlers.saveNewCard(this.fields.title, this.fields.text, this.fields.author);
+	},
+	cancelEdit: function(linkObj) {
+		handlers.cancelEdit(linkObj.name);
+	},
+	deleteCard: function(linkObj) {
+		handlers.deleteCard(linkObj.name);
+	},
+	saveEdit: function(linkObj) {
+		this.fields.title = document.getElementById(linkObj.name).querySelector('[name="title"]').value;
+		this.fields.text = document.getElementById(linkObj.name).querySelector('[name="text"]').value;
+		handlers.saveEdit(linkObj.name, this.fields.title, this.fields.text);
+	},
+	editCard: function(linkObj) {
+		handlers.editCard(linkObj.name);
+	}
+};
+
+events.init();
+window.ddeck = events;
 })();

@@ -25,6 +25,8 @@
 //	
 //}
 
+console.log(document.querySelector('[name="title"]').value);
+
 
 document.querySelector('button').onclick = function() {
 	let elmLi = '',
