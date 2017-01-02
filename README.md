@@ -3,4 +3,3 @@
 3. should consider animating cards when scrolling
 4. should make menu and action links tab-able
 5. should consider adding labels on editible fields
-
