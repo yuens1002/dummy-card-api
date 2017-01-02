@@ -168,6 +168,141 @@ let view = {
 	cardsPerPage: 3,
 	currentPage: 1,
 	currentMode: deck.modes['view'],
+	CreateLinkElm: class {
+		constructor(idx) {
+			this.idx = idx;
+			this.elmLi =  document.createElement('li');
+			this.fnPath = 'view.setupEventListeners.';
+			this.links = {
+				control: {
+					prev: {
+						fnName: 'prev',
+						text: '← Prev'
+					},
+					next: {
+						fnName: 'next',
+						text: 'Next →'
+					}
+				},
+				menu: {
+					view: {
+						fnName: 'view',
+						text: '❐ Card Demo'
+					},
+					new: {
+						fnName: 'newCard',
+						text: '+ Add Card',
+						save: {
+							fnName: 'saveNew',
+							text: '✓ Save'
+						}
+					},
+					edit: {
+						fnName: 'edit',
+						text: '✎ Edit Cards',
+						cancel: {
+							fnName: 'cancelEdit',
+							text: '✕ Cancel'
+						},
+						delete: {
+							fnName: 'deleteCard',
+							text: '✕ Delete'
+						},
+						save: {
+							fnName: 'saveEdit',
+							text: '✓ Save'
+						}
+					}
+				}
+			};
+		}
+		get prev() {
+		this.makeLink(this.links.control.prev.text, {
+			href: '#',
+			id: 'prev-link',
+			onclick: this.onclickValue(this.links.control.prev.fnName, 0)
+		});
+		return this.elmLi;
+		}
+		get next() {
+			this.makeLink(this.links.control.next.text, {
+				href: '#',
+				id: 'next-link',
+				onclick: this.onclickValue(this.links.control.next.fnName,0)
+			});
+			return this.elmLi;
+		}
+		get view() {
+			this.makeLink(this.links.menu.view.text, {
+				href: '#',
+				id: 'card-demo',
+				onclick: this.onclickValue(this.links.menu.view.fnName,0)
+			});
+			return this.elmLi;
+		}
+		get newCard() {
+			this.makeLink(this.links.menu.new.text, {
+				href: '#',
+				id: 'add-card',
+				onclick: this.onclickValue(this.links.menu.new.fnName,0)
+			});
+			return this.elmLi;
+		}
+		get saveNew() {
+			this.makeLink(this.links.menu.new.save.text, {
+				href: '#',
+				onclick: this.onclickValue(this.links.menu.new.save.fnName,0)
+			});
+			return this.elmLi;
+		}
+		get edit() {
+			this.makeLink(this.links.menu.edit.text, {
+				href: '#',
+				id: 'edit-cards',
+				onclick: this.onclickValue(this.links.menu.edit.fnName,0)
+			});
+			return this.elmLi;
+		}
+		get cancelEdit() {
+			this.makeLink(this.links.menu.edit.cancel.text, {
+				href: '#',
+				name: this.idx,
+				onclick: this.onclickValue(this.links.menu.edit.cancel.fnName)
+			});
+			return this.elmLi;
+		}
+		get deleteCard() {
+			this.makeLink(this.links.menu.edit.delete.text, {
+				href: '#',
+				name: this.idx,
+				onclick: this.onclickValue(this.links.menu.edit.delete.fnName)
+			});
+			return this.elmA;
+		}
+		get saveEdit() {
+			this.makeLink(this.links.menu.edit.save.text, {
+				href: '#',
+				name: this.idx,
+				onclick: this.onclickValue(this.links.menu.edit.save.fnName)
+			});
+			return this.elmLi;
+		}
+		onclickValue(fnName) {
+			return (
+				arguments.length > 1 ?
+				this.fnPath+fnName+'();return false;' :
+				this.fnPath+fnName+'(this);return false;'
+			);
+		}
+		makeLink(text, attrs) {
+			let elmA = document.createElement('a');
+			for(var key in attrs) {
+				elmA.setAttribute(key, attrs[key]);
+			}
+			elmA.innerHTML = text;
+			this.elmLi.appendChild(elmA);
+		}
+	},
 	makeCard: function(idx, actionGroup) {
 		let eleChild = document.createElement('div');
 		eleChild.setAttribute('class', 'child');
@@ -294,11 +429,21 @@ let view = {
 		}
 	},
 	showTitle: function(pageTitle) {
-		let eleHeader = document.querySelector('header');
-		eleHeader.innerHTML = pageTitle;
+		document.querySelector('header')
+		.innerHTML = pageTitle;
 	},
 	showNavBar: function(mode) {
+		if (document.querySelector('ul').childNodes.length === 0) {
+			let elmUl = document.querySelector('ul');
+			let elmPrevLink = new this.CreateLinkElm().prev;
+			let elmNextLink = new this.CreateLinkElm().next;
+			elmUl.innerHTML = '<br><br><li id="page-info" class="page-info"></li>';
+			elmUl.appendChild(elmPrevLink);
+			elmUl.appendChild(elmNextLink);
+			console.log(elmUl);
+		}
 		if (mode === deck.modes['new']) {
+
 			document.getElementById('page-info').setAttribute('class', 'none');
 			document.getElementById('prev-link').setAttribute('class', 'none');
 			document.getElementById('next-link').setAttribute('class', 'none');
@@ -399,7 +544,7 @@ let view = {
 				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
 				handlers.cancelNewCard(cardIdx);
 			} else if (cardElmClicked.className === 'newcard-save-links') {
-				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
+//				cardIdx = cardElmClicked.parentNode.parentNode.parentNode.id;
 				title = cardElmClicked.parentNode.parentNode.childNodes[1].value;
 				text = cardElmClicked.parentNode.parentNode.childNodes[2].value;
 				author = cardElmClicked.parentNode.parentNode.childNodes[3].value;

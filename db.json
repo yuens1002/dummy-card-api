@@ -37,17 +37,17 @@
     },
     {
       "title": "Multi-Media Vacation",
-      "text": "Tour of a beautiful resort unit, Interactive map and videro of all resorts.",
+      "text": "Tour of a beautiful resort unit, Interactive map and video of all resorts.",
       "author": "Sunny Yuen",
       "image_url": "http://lorempixel.com/300/150/",
       "id": 7
     },
     {
-      "title": "This Is A Public Broadcast",
-      "text": "A few announcements to make today, there had been an incident across town of Hawakapica. People are seemingly disappearing.",
-      "author": "News Update DCNR",
+      "title": "Let's try this again",
+      "author": "hohaasf",
       "image_url": "http://lorempixel.com/300/150/",
-      "id": 8
+      "id": 8,
+      "text": "this can't be left blank"
     }
   ]
 }

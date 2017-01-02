@@ -43,6 +43,209 @@ document.querySelector('button').onclick = function() {
   	}
 }
 
+function test(obj) {
+	obj.name;
+}
+
+function cancelEdit(obj) {
+	console.log(obj.name);
+}
+
+
+
+//class Animal { 
+//  constructor(name) {
+//    this.name = name;
+//  }
+//  
+//  speak() {
+//    console.log(this.name + ' makes a noise.');
+//  }
+//}
+
+//	type of links
+//	if type is edit make links with either cancel or save
+//	if type is new make link with save
+//	if type is mode make view, add new or edit
+//	if type is control make prev or next
+
+
+/*
+
+<a href="#" onclick="cancel(this);return false;"></a>
+
+*/
+
+let view = {
+	
+	listners: function () {
+		let elmBody = document.body;
+		elmBody.addEventListener('mouseover', function(event) {
+			let elmClicked = event.target;
+			if (elmClicked.id === 'new-card') {
+				window.status = 'new card function will tricker';
+			}
+		});
+		
+		
+	},
+	buttonEvents: {
+		newCard: function() {
+			console.log('you clicked new');
+		}
+	}
+}
+
+view.listners();
+
+class CreateLinkElm {
+	constructor(idx) {
+		this.idx = idx;
+		this.elmA = document.createElement('a');
+		this.fnPath = 'view.buttonEvents.',
+		this.links = {
+			control: {
+				prev: {
+					fnName: 'prev',
+					text: '← Prev'
+				},
+				next: {
+					fnName: 'next',
+					text: 'Next →'
+				}
+			},
+			menu: {
+				view: {
+					fnName: 'view',
+					text: '❐ Card Demo'
+				},
+				new: {
+					fnName: 'newCard',
+					text: '+ Add Card',
+					save: {	
+						fnName: 'saveNew',
+						text: '✓ Save'
+					}
+				},
+				edit: {
+					fnName: 'edit',
+					text: '✎ Edit Cards',
+					cancel: {
+						fnName: 'cancelEdit',
+						text: '✕ Cancel'
+					},
+					delete: {
+						fnName: 'delete',
+						text: '✕ Delete'
+					},
+					save: {
+						fnName: 'saveEdit',
+						text: '✓ Save'
+					}
+				}
+			}
+		};
+	}
+	get prev() {
+		this.makeLink(this.links.control.prev.text, {
+			href: '#',
+			onclick: this.onclickValue(this.links.control.prev.fnName,0)
+		});
+		return this.elmA;
+	}
+	get next() {
+		this.makeLink(this.links.control.next.text, {
+			href: '#',
+			onclick: this.onclickValue(this.links.control.next.fnName,0)
+		});
+		return this.elmA;
+	}
+	get view() {
+		this.makeLink(this.links.menu.view.text, {
+			href: '#',
+			onclick: this.onclickValue(this.links.menu.view.fnName,0)
+		});
+		return this.elmA;
+	}
+	get newCard() {
+		this.makeLink(this.links.menu.new.text, {
+			href: '#',
+			id: 'new-card',
+			onclick: this.onclickValue(this.links.menu.new.fnName,0)
+		});
+		return this.elmA;
+	}
+	get saveNew() {
+		this.makeLink(this.links.menu.new.save.text, {
+			href: '#',
+			onclick: this.onclickValue(this.links.menu.new.save.fnName,0)
+		});
+		return this.elmA;
+	}
+	get edit() {
+		this.makeLink(this.links.menu.edit.text, {
+			href: '#',
+			onclick: this.onclickValue(this.links.menu.edit.fnName,0)
+		});
+		return this.elmA;
+	}
+	get cancelEdit() {
+		this.makeLink(this.links.menu.edit.cancel.text, {
+			href: '#', 
+			name: this.idx, 
+			onclick: this.onclickValue(this.links.menu.edit.cancel.fnName)
+		});
+		return this.elmA;
+	}
+	get delete() {
+		this.makeLink(this.links.menu.edit.delete.text, {
+			href: '#',
+			name: this.idx,
+			onclick: this.onclickValue(this.links.menu.edit.delete.fnName)
+		});
+		return this.elmA;
+	}
+	get saveEdit() {
+		this.makeLink(this.links.menu.edit.save.text, {
+			href: '#',
+			name: this.idx,
+			onclick: this.onclickValue(this.links.menu.edit.save.fnName)
+		});
+		return this.elmA;
+	}
+	onclickValue(fnName) {
+		return (arguments.length > 1 ?
+			this.fnPath+fnName+'();return false;' : this.fnPath+fnName+'(this);return false;');
+	}
+	makeLink(text, attrs) {
+		for(var key in attrs) {
+    		this.elmA.setAttribute(key, attrs[key]);
+  		}
+		this.elmA.innerHTML = text;
+	}
+}
+
+function createActionLinks(idx) {
+	document.body.insertBefore(new CreateLinkElm(idx).prev, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).next, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).view, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).newCard, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).saveNew, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).edit, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).cancelEdit, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).delete, document.body.firstChild);
+	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+	document.body.insertBefore(new CreateLinkElm(idx).saveEdit, document.body.firstChild);
+}
+
+createActionLinks(11);
 
 
 /*
