@@ -1,8 +1,4 @@
-1. should have a fade in effort during card load
-2. should have a fade out effort during card deletion
-3. should consider animating cards when scrolling
-4. should make menu and action links tab-able
-5. should have an Enter key keypress event during card completion
-6. should consider adding labels on editible fields
-7. should prevent empty fields
-8. trim possible white spaces before and after each entry field
+1. should have a way to tab thru all menu and action links
+2. should have all links operable by the enter key
+3. should prevent empty fields
+4. trim possible white spaces before and after each entry field
