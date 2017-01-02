@@ -67,6 +67,31 @@ let deck = {
 			this.delCardFromDb(id);
 		}
 	},
+	checkForm: function(fields) {
+		switch (true) {
+			case fields.title && fields.text && fields.author:
+				addCard(fields.title, fields.text, fields.author);
+				break;
+			case !fields.title:
+				document.getElementsByTagName('label')[0].innerHTML = 'Title is Required!';
+				document.querySelector('[name="title"]').focus();
+				break;
+			case !fields.text:
+				console.log(document.getElementsByTagName('label')[1]);
+				document.getElementsByTagName('label')[1].innerHTML = 'Paragrpah is Required!';
+				document.querySelector('[name="text"]').focus();
+				break;
+			case !fields.author:
+				document.getElementsByTagName('label')[2].innerHTML = 'Name or handle is Required!';
+				document.querySelector('[name="author"]').focus();
+				break;
+			default:
+				let elmP = document.createElement('p');
+				elmP.innerHTML = 'All fields are required!';
+				document.querySelector('.child-inner').insertBefore(elmP, document.querySelector('.child-inner').firstChild);
+				break;
+		}
+	},
 	delCardFromDb: function(id) {
 		const curl = this.appconst.base_url+ '/' + id
 		fetch(curl, {
@@ -159,8 +184,9 @@ let handlers = {
 //		deck.deleteCard(0, idx, true);
 //		view.showPage(1);
 //	},
-	saveNewCard: function(title, text, author) {
-		deck.addCard(title, text, author);
+	saveNewCard: function(fields) {
+		deck.checkForm(fields);
+//		deck.addCard(title, text, author);
 	}
 };
 
@@ -529,6 +555,9 @@ let view = {
 		node.replaceChild(this.createCardActionLinks('cancelSave', idx), eleActions);
 		node.replaceChild(inputTitle, eleTitle);
 		node.replaceChild(areaText, eleText);
+	},
+	formEventListener: function() {
+
 	}
 };
 
@@ -560,7 +589,7 @@ let events = {
 		this.fields.title = document.querySelector('[name="title"]').value;
 		this.fields.text = document.querySelector('[name="text"]').value;
 		this.fields.author = document.querySelector('[name="author"]').value;
-		handlers.saveNewCard(this.fields.title, this.fields.text, this.fields.author);
+		handlers.saveNewCard(this.fields);
 	},
 	cancelEdit: function(linkObj) {
 		handlers.cancelEdit(linkObj.name);
