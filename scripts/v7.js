@@ -440,10 +440,7 @@ let view = {
 			elmUl.innerHTML = '<br><br><li id="page-info" class="page-info"></li>';
 			elmUl.appendChild(elmPrevLink);
 			elmUl.appendChild(elmNextLink);
-			console.log(elmUl);
-		}
-		if (mode === deck.modes['new']) {
-
+		} else if (mode === deck.modes['new']) {
 			document.getElementById('page-info').setAttribute('class', 'none');
 			document.getElementById('prev-link').setAttribute('class', 'none');
 			document.getElementById('next-link').setAttribute('class', 'none');
@@ -468,7 +465,19 @@ let view = {
 			document.querySelector('#prev-link').removeAttribute('style')
 	},
 	showModeLinks: function(mode) {
-		if (mode === deck.modes['edit']) {
+//		if (document.querySelector('ul').childNodes.length === 0) {
+//			let elmUl = document.querySelector('ul');
+//			let elmPrevLink = new this.CreateLinkElm().prev;
+//			let elmNextLink = new this.CreateLinkElm().next;
+//			elmUl.innerHTML = '<br><br><li id="page-info" class="page-info"></li>';
+//			elmUl.appendChild(elmPrevLink);
+//			elmUl.appendChild(elmNextLink);
+//		}
+		if (document.querySelector('ul').childNodes.length === 5) {
+			let elmUl = document.querySelector('ul');
+
+
+		} else if (mode === deck.modes['edit']) {
 			document.getElementById('card-demo').setAttribute('class', 'normal');
 			document.getElementById('add-card').setAttribute('class', 'normal');
 			document.getElementById('edit-cards').setAttribute('class', 'active');
