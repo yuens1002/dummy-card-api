@@ -1,5 +1,5 @@
 (function() {
-
+'use strict'
 let deck = {
 	cards: [],
 	new: {
@@ -69,8 +69,12 @@ let deck = {
 	},
 	checkForm: function(fields) {
 		switch (true) {
-			case fields.title && fields.text && fields.author:
-				addCard(fields.title, fields.text, fields.author);
+			case (!!fields.title && !!fields.text && !!fields.author):
+				view.formEventListeners(1);
+				for (let key in fields) {
+					fields[key].trim();
+				}
+				this.addCard(fields.title, fields.text, fields.author);
 				break;
 			case !fields.title:
 				document.getElementsByTagName('label')[0].innerHTML = 'Title is Required!';
@@ -151,7 +155,7 @@ let handlers = {
 //	},
 	switchMode: function(page, mode) {
 		deck.setMode(mode);
-		mode === deck.modes['new'] ? view.showNewPage(mode) : view.showPage(page, mode)
+		mode === deck.modes.new ? view.showNewPage(mode) : view.showPage(page, mode)
 	},
 	editCard: function(idx) {
 		let node = document.getElementById(idx).children[1];
@@ -193,7 +197,7 @@ let handlers = {
 let view = {
 	cardsPerPage: 3,
 	currentPage: 1,
-	currentMode: deck.modes['view'],
+	currentMode: deck.modes.view,
 	CreateLinkElm: class {
 		constructor(idx) {
 			this.idx = idx;
@@ -476,7 +480,7 @@ let view = {
 			elmUl.appendChild(elmPrevLink);
 			elmUl.appendChild(elmNextLink);
 		}
-		if (mode === deck.modes['new']) {
+		if (mode === deck.modes.new) {
 			document.getElementById('page-info').setAttribute('class', 'none');
 			document.getElementById('prev-link').setAttribute('class', 'none');
 			document.getElementById('next-link').setAttribute('class', 'none');
@@ -519,11 +523,11 @@ let view = {
 			elmUl.insertBefore(elmDiv1, elmUl.firstChild);
 			elmUl.insertBefore(elmCardDemoLink, elmUl.firstChild);
 		}
-		if (mode === deck.modes['edit']) {
+		if (mode === deck.modes.edit) {
 			document.getElementById('card-demo').setAttribute('class', 'normal');
 			document.getElementById('add-card').setAttribute('class', 'normal');
 			document.getElementById('edit-cards').setAttribute('class', 'active');
-		} else if (mode === deck.modes['new']) {
+		} else if (mode === deck.modes.new) {
 			document.getElementById('card-demo').setAttribute('class', 'normal');
 			document.getElementById('add-card').setAttribute('class', 'active');
 			document.getElementById('edit-cards').setAttribute('class', 'normal');
@@ -551,13 +555,45 @@ let view = {
 		inputTitle.size = 32;
 		areaText.value = node.children[2].innerHTML;
 
-//		eleActions = this.createCardActionLinks('cancelSave', idx);
 		node.replaceChild(this.createCardActionLinks('cancelSave', idx), eleActions);
 		node.replaceChild(inputTitle, eleTitle);
 		node.replaceChild(areaText, eleText);
 	},
-	formEventListener: function() {
-
+	formEventListeners: function(toStop) {
+		let elmTitleInput = document.querySelector('[name="title"]'),
+			elmTextInput = document.querySelector('[name="text"]'),
+			elmAuthorInput = document.querySelector('[name="author"]'),
+			elmTitleLabel = document.getElementsByTagName('label')[0],
+			elmTextLabel = document.getElementsByTagName('label')[1],
+			elmAuthorLabel = document.getElementsByTagName('label')[2];
+		if (arguments.length === 0) {
+			elmTitleInput.addEventListener('blur', swapLabel, this, false);
+			elmTextInput.addEventListener('blur', swapLabel, this, false);
+			elmAuthorInput.addEventListener('blur', swapLabel, this, false);
+		} else {
+			elmTitleInput.removeEventListener('blur', swapLabel, false);
+			elmTextInput.removeEventListener('blur', swapLabel, false);
+			elmAuthorInput.removeEventListener('blur', swapLabel, false);
+		}
+		function swapLabel(field) {
+			switch(field.target.name) {
+				case 'title':
+					!field.target.value ?
+					elmTitleLabel.innerHTML = 'Title is Required!' :
+					elmTitleLabel.innerHTML = 'awesome dude!';
+					break;
+				case 'text':
+					!field.target.value ?
+					elmTextLabel.innerHTML = 'Paragraph is Required!' :
+					elmTextLabel.innerHTML = 'hOoley smokes... one more to go!';
+					break;
+				case 'author':
+					!field.target.value ?
+					elmAuthorLabel.innerHTML = 'Name or Handle is Required!' :
+					elmAuthorLabel.innerHTML = 'you\'re so cool!';
+					break;
+			}
+		}
 	}
 };
 
@@ -575,6 +611,7 @@ let events = {
 	},
 	newCard: function() {
 		handlers.switchMode(1, deck.modes.new);
+		view.formEventListeners();
 	},
 	edit: function() {
 		handlers.switchMode(1, deck.modes.edit);
