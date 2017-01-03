@@ -265,3 +265,52 @@ document.getElementsByClassName('toggleButton')[0].onclick = function() {
   }  
 }
 */
+
+
+//		
+//		
+//		function inMsg (event) {	
+//			let formFieldOnBlur = event.target,
+//				elmTitleInput = document.getElementsByTagName('label')[0],
+//				elmTextInput = document.getElementsByTagName('label')[1],
+//				elmAuthorInput = document.getElementsByTagName('label')[2];
+//				concole.log(formFieldOnBlur);
+//			
+//				formFieldOnBlur.name === 'title' && !elmTitleInput.innerHTML ?
+//				elmTitleInput.innerHTML = 'Title is Required' :
+//				elmTitleInput.innerHTML = 'Awesome!';
+//			
+//				formFieldOnBlur.name === 'text' && !elmTextInput.innerHTML ?
+//				elmTextInput.innerHTML = 'Paragraph is Required' :
+//				elmTextInput.innerHTML = 'Oohley smokes... one more to go!';
+//			
+//				formFieldOnBlur.name === 'author' && !elmAuthorInput.innerHTML ?
+//				elmAuthorInput.innerHTML = 'Name or Handle is Required' :
+//				elmAuthorInput.innerHTML = 'You\'re Cool!';
+//			
+//			
+//				} else {
+//					document.getElementsByTagName('label')[0].innerHTML = 'Title';
+//				}
+//			} 
+//				else if (formFieldKeyUp.name === 'text') {
+//				document.getElementsByTagName('label')[1].innerHTML = 'Oohley smokes... one more to go!';
+//			} else {
+//				document.getElementsByTagName('label')[2].innerHTML = 'You\'re Cool!';
+//			}
+	
+		
+		
+//		let titleLabel = document.getElementsByTagName('label')[0];
+//		let fieldTitle = document.querySelector('[name="title"]');
+//		fieldTitle.addEventListener('blur', msg, this, false);
+//		
+//		function msg(field) {
+//			console.log(field);
+//				!field.target.value ? 
+//				titleLabel.innerHTML = 'Title is Required' :
+//				titleLabel.innerHTML = 'Awesome!';
+//		}
+//		
+//	}
+		
