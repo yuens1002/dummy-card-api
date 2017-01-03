@@ -1,16 +1,9 @@
 {
   "cards": [
     {
-      "id": 1,
-      "title": "We are Humans",
-      "text": "We act like humans, we talk like humans, and we think like humans. And we call out anyone who does the opposite.",
-      "author": "António Capelo",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
       "id": 2,
       "title": "We work together",
-      "text": "We insist on working collaborativelly. <strong>No rockstars</strong>. No departments. The whole owns the whole project together.",
+      "text": "We insist on working collaborativelly. <bold>No rockstars</bold>. No departments. The whole owns the whole project together.",
       "author": "José Tavares",
       "image_url": "http://lorempixel.com/300/150/"
     },
@@ -22,32 +15,39 @@
       "image_url": "http://lorempixel.com/300/150/"
     },
     {
-      "id": 4,
-      "title": "We hire differently",
-      "text": "Most companies operate under the premise that employees should be replaceable like parts of an assembly line. We choose our people more carefully.",
-      "author": "Marta Fernandes",
-      "image_url": "http://lorempixel.com/300/150/"
-    },
-    {
       "id": 5,
-      "title": "asdfadf autonomous",
+      "title": "Work Autonomously",
       "text": "You’re given an incredible amount of freedom and autonomy at Mindera. That goes for everyone.",
       "author": "Luís Couto",
       "image_url": "http://lorempixel.com/300/150/"
     },
     {
-      "id": 6,
-      "title": "Work together",
-      "text": "Our flat structure calls for it by necessity. Being a leader may feel unnatural at first, but we expect everyone to step up and own part of the project.",
-      "author": "César Aguiar",
-      "image_url": "http://lorempixel.com/300/150/"
+      "title": "Central Washington",
+      "text": "Steamboat Rock. Proceed through the entrance station, and begin looking for the day use parking area.",
+      "author": "Sunny Yuen",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 6
     },
     {
-      "title": "This is a Test",
-      "text": "Working with the Best",
-      "author": "Me me me mem ememme....",
+      "title": "asdfa",
+      "text": "asdfas",
+      "author": "asdfasdf",
       "image_url": "http://lorempixel.com/300/150/",
       "id": 7
+    },
+    {
+      "title": "asdf",
+      "text": "asdfasdfe",
+      "author": "werehsdf",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 8
+    },
+    {
+      "title": "asdf",
+      "text": "asdfas      ",
+      "author": "        asdfasf     ",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 9
     }
   ]
 }

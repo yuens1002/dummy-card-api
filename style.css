@@ -1,15 +1,53 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto|Patua+One');
 
 body {
+	margin-top: 2rem;
 	background-color: #eaeaea;
+	background-image: url("retina_dust_@2X.png");
+	background-attachment: fixed;
 	font-family: 'Roboto', sans-serif;
 	line-height: 1.3;
 	font-size: 16px;
 	padding-bottom: 50px;
 }
 
+a, header, nav {
+	font-family: 'Patua One', cursive;
+}
+
+label:first-child {
+	padding-top: 1rem;
+}
+
+label {
+	display: block;
+	font-size: 80%;
+	padding-left: 0.7rem;
+	padding-bottom: .3rem;
+}
+nav {
+	white-space: nowrap;
+}
+
+nav ul {
+	text-align: center;
+	margin-left: -2.5rem;
+}
+
+nav li {
+	display: inline-block;
+	padding-right: .5rem;
+	padding-left: .5rem;
+}
+
 p {
 	font-size: 90%;
+}
+
+header {
+	padding-top: 20px;
+	font-size: 600%;
+	text-align: center;
 }
 
 textarea {
@@ -36,70 +74,75 @@ textarea {
 	border: 2px solid #eaeaea;
 }
 
-
 input[type=text]:focus, textarea:focus {
     border: 2px solid #999;
 }
 
+.divider {
+	color: #d3d3d3;
+}
+
+.none {
+	display: none;
+}
+/* necessary style not a dulicate to make a selection */
+.hide-card-links {
+	display: none;
+}
+
+.visible {
+	display: inline;
+}
+
+.active {
+    color: black;
+}
+
+.normal {
+    color: #008CBA;
+}
+
+.normal:hover {
+    color: #6cd7f7;
+}
+
+a {
+	color: #008CBA;
+	text-decoration: none;
+	-webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+a:hover {
+	color: #6cd7f7;
+}
+
+a:active {
+	color: #008CBA;
+}
+
+
+/*
 .edit-links,
 .delete-links,
 .cancel-links,
 .save-links,
-.newcard-cancel-links,
-.newcard-save-links,
-#prev-link,
-#next-link,
-#add-card-link {
+.newcard-save-links {
 	font-family: 'Patua One', cursive;
     color: #008CBA;
     text-decoration: none;
 	-webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
 }
-
 .edit-links:hover,
 .delete-links:hover,
 .cancel-links:hover,
 .save-links:hover,
-.newcard-cancel-links:hover,
-.newcard-save-links:hover,
-#prev-link:hover,
-#next-link:hover,
-#add-card-link:hover {
+.newcard-save-links:hover {
 	color: #6cd7f7;
 	cursor: pointer;
 }
-
-header {
-	font-family: 'Patua One', cursive;
-	padding-top: 20px;
-	font-size: 600%;
-	text-align: center;
-}
-
-nav {
-	font-family: 'Patua One', cursive;
-	text-align: center;
-	white-space: nowrap;
-}
-
-nav ul {
-	display: inline;
-}
-
-nav li {
-	display: inline-block;
-	padding-right: 2rem;
-}
-
-.child-inner ul {
-	text-align: right;
-}
-
-.child-inner li {
-	display: inline-block;
-	padding-left: 2rem;
-}
+*/
 
 .container {
 	width: 100%;
@@ -108,6 +151,90 @@ nav li {
 	flex-flow: row wrap;
 	justify-content: center;
 
+}
+
+.child {
+	margin: 1rem 1rem 1rem 1rem;
+	display: inline-block;
+	background-color: white;
+	width: 300px;
+	border-bottom: 2px solid #e3e3e3;
+	box-shadow: 5px 3px 10px #eaeaea;
+}
+
+.child.moveRTL {
+	position: relative;
+    animation-name: RTL;
+    animation-duration: 3.5s;
+    animation-timing-function: ease;
+	animation-fill-mode: forwards;
+    /* animation-direction: alternate; */
+}
+
+/* Standard syntax */
+@keyframes RTL {
+	from {
+		left: 100%;
+		opacity: 0;
+	}
+	to {
+		left: 0;
+		opacity: 1;
+	}
+}
+
+.child.moveLTR {
+	position: relative;
+    animation-name: LTR;
+    animation-duration: 3.5s;
+    animation-timing-function: ease;
+	animation-fill-mode: forwards;
+    /* animation-direction: alternate; */
+}
+
+/* Standard syntax */
+@keyframes LTR {
+	from {
+		right: 100%;
+		opacity: 0;
+	}
+	to {
+		right: 0;
+		opacity: 1;
+	}
+}
+
+.child.fadein {
+	position: relative;
+    animation-name: duration;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+	animation-fill-mode: forwards;
+    /* animation-direction: alternate; */
+}
+
+/* Standard syntax */
+@keyframes duration {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.child-inner {
+	padding: 0 1.5rem 1rem 1.5rem;
+}
+
+.child-inner ul {
+	text-align: right;
+}
+
+.child-inner li {
+	text-align: right;
+	display: inline;
+	padding-left: 1.5rem;
 }
 
 .author {
@@ -120,14 +247,3 @@ nav li {
 	font-size: 150%;
 }
 
-.child {
-	margin: 3rem 1rem 1rem 1rem;
-	display: inline-block;
-	background-color: white;
-	width: 300px;
-	border-bottom: 2px solid #e3e3e3;
-}
-
-.child-inner {
-	padding: 0 1.5rem 1rem 1.5rem;
-}
