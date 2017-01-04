@@ -10,7 +10,9 @@ let deck = {
 	},
 	appconst: {
 		image_url: 'http://lorempixel.com/300/150/',
-		image_add_url: 'http://placehold.it/300x150/6cd7f7/333333?text=Add+a+Card',
+		// placeHold is down currently, setting to image_url temporarily
+		image_add_url: 'http://lorempixel.com/300/150/',
+//		image_add_url: 'http://placehold.it/300x150/6cd7f7/333333?text=Add+a+Card',
 		base_url: 'http://localhost:3000/cards',
 		cards99: '?_page=1&_limit=99&_sort=id&_order=DESC'
 	},
@@ -35,7 +37,7 @@ let deck = {
 			text: 'A few sentences. Be creative, be yourself. This is the easy part',
 			author: 'Name or handle'
 		}
-	}
+	},
 	modes: {
 		view: 'Card Demo',
 		new: 'Add Card',
@@ -74,6 +76,8 @@ let deck = {
 	},
 	addCard: function(title, text, author) {
 		view.formEventListeners(1);
+		/* need to set the mode b/c it's not going back to current */
+		this.setMode(this.modes.view);
 		this.cards.unshift(new this.Card(title, text, author));
 		this.saveCardToDb();
 	},
@@ -91,60 +95,76 @@ let deck = {
 		}
 	},
 	checkForm: function(fields) {
-		let numValidField = 0,
-			editTitleInput = document.getElementById(fields.idx).querySelector('[name="title"]'),
-			editTextInput = document.getElementById(fields.idx).querySelector('[name="text"]'),
-			newCard = {
-				title: function() {
-					document.getElementsByTagName('label')[0].innerHTML =
-						deck.form.label.title.default + deck.form.label.required;
-					document.querySelector('[name="title"]').focus();
-				},
-				text: function() {
-					document.getElementsByTagName('label')[1].innerHTML =
-						deck.form.label.text.default + deck.form.label.required;
-					document.querySelector('[name="text"]').focus();
-				},
-				author: function() {
-					document.getElementsByTagName('label')[2].innerHTML =
-						deck.form.label.author.default + deck.form.label.required;
-					document.querySelector('[name="author"]').focus();
-				}
+		let numValidField = 0;
+		let	newCard = {
+			title: function() {
+				document.getElementsByTagName('label')[0].innerHTML =
+					deck.form.label.title.default + deck.form.label.required;
+				document.querySelector('[name="title"]').focus();
 			},
-			editCard = {
-				title: function() {
-					editTitleInput.setAttribute('placeholder',
-						deck.form.label.title.default + deck.form.label.required);
-					editTitleInput.focus();
-				},
-				text: function() {
-					editTextInput.setAttribute('placeholder',
-						deck.form.label.text.default + deck.form.label.required);
-					editTextInput.focus();
-				}
-			};
+			text: function() {
+				document.getElementsByTagName('label')[1].innerHTML =
+					deck.form.label.text.default + deck.form.label.required;
+				document.querySelector('[name="text"]').focus();
+			},
+			author: function() {
+				document.getElementsByTagName('label')[2].innerHTML =
+					deck.form.label.author.default + deck.form.label.required;
+				document.querySelector('[name="author"]').focus();
+			}
+		};
+		let editCard = {
+			title: function() {
+				/ * this variable not exist if idx doesnt from fields */
+				let editTitleInput =
+					document.getElementById(fields.idx).querySelector('[name="title"]');
+				editTitleInput.setAttribute('placeholder',
+					deck.form.label.title.default + deck.form.label.required);
+				editTitleInput.focus();
+			},
+			text: function() {
+				/ * these variables do not exist if idx doesnt from fields */
+				let editTitleInput =
+					document.getElementById(fields.idx).querySelector('[name="title"]'),
+					editTextInput =
+					document.getElementById(fields.idx).querySelector('[name="text"]');
+				editTextInput.setAttribute('placeholder',
+					deck.form.label.text.default + deck.form.label.required);
+				/* if focus isn't on title input, focus on the text input */
+				document.activeElement !== editTitleInput && editTextInput.focus();
+			}
+		};
 		/* form is the newCard variable defined above */
 		function processNewForm(form) {
+			for (let key in fields) {
 				fields[key].trim();
-				for (let key in fields) {
 				!!fields[key] ? numValidField++ : form[key]();
 			}
 		}
 		/* form is the editCard variable defined above */
 		function processEditForm(form) {
-				!!fields['title'].trim() ? numValidField++ : form[key]();
-				!!fields['text'].trim() ? numValidField++ : form[key]();
-			}
+			!!fields['title'].trim() ? numValidField++ : form['title']();
+			!!fields['text'].trim() ? numValidField++ : form['text']();
 		}
+
+		Object.size = function(obj) {
+			let size = 0, key;
+			for (key in obj) {
+				if (obj.hasOwnProperty(key)) size++;
+			}
+			return size;
+		};
 
 		if (view.currentMode === this.modes.new) {
 			processNewForm(newCard);
 			/* using an && operator to "if true then do" */
-			numValidField === fields.length &&
+			numValidField === Object.size(fields) &&
 			this.addCard(fields.title, fields.text, fields.author);
 		} else {
+
 			processEditForm(editCard);
-			if (numValidField === fields.length-1) {
+			// factoring the idx property
+			if (numValidField === Object.size(fields)-1) {
 				let cardId = deck.cards[fields.idx].id;
 				this.editCard(cardId, fields.title, fields.text, fields.idx);
 			}
@@ -212,7 +232,7 @@ let deck = {
 				author: deck.cards[0].author,
 				image_url: this.appconst.image_url
 			})
-		}).then(() => view.showPage(1, deck.modes.view))
+		}).then(() => view.showPage(1, this.modes.view))
 	    .catch((err) => console.log(err));
 	},
 	fetchCards: function() {
@@ -262,7 +282,7 @@ let handlers = {
 	cancelEdit: function(idx) {
 		view.showCard(idx, 'editDel');
 	},
-	saveEdit: function(idx, title, text) {
+	saveEdit: function(fields) {
 		deck.checkForm(fields);
 //		let cardId = deck.cards[idx].id;
 //		deck.editCard(cardId, title, text, idx);
@@ -629,10 +649,12 @@ let view = {
 		let inputTitle = document.createElement('input');
 		inputTitle.setAttribute('type', 'text');
 		inputTitle.setAttribute('name', 'title');
+		inputTitle.setAttribute('placeholder', deck.form.placeholder.title);
 		let areaText = document.createElement('textarea');
 		areaText.setAttribute('name', 'text');
-		let inputAuthor = document.createElement('input');
-		inputAuthor.setAttribute('type', 'text');
+		areaText.setAttribute('placeholder', deck.form.placeholder.text);
+//		let inputAuthor = document.createElement('input');
+//		inputAuthor.setAttribute('type', 'text');
 
 		inputTitle.value = node.children[1].innerHTML;
 		inputTitle.size = 32;
