@@ -14,6 +14,28 @@ let deck = {
 		base_url: 'http://localhost:3000/cards',
 		cards99: '?_page=1&_limit=99&_sort=id&_order=DESC'
 	},
+	form: {
+		label: {
+			required: ' is Required!',
+			title: {
+				feedback: 'awesome dude!',
+				default: 'Card Title'
+			},
+			text: {
+				feedback: 'hOoley smokes... one more to go!',
+				default: 'Paragraph'
+			},
+			author: {
+				feedback: 'you\'re so cool!',
+				default: 'Name or Handle'
+			}
+		},
+		placeholder: {
+			title: 'Card title',
+			text: 'A few sentences. Be creative, be yourself. This is the easy part',
+			author: 'Name or handle'
+		}
+	}
 	modes: {
 		view: 'Card Demo',
 		new: 'Add Card',
@@ -51,6 +73,7 @@ let deck = {
 		return Math.ceil(this.cards.length / view.cardsPerPage);
 	},
 	addCard: function(title, text, author) {
+		view.formEventListeners(1);
 		this.cards.unshift(new this.Card(title, text, author));
 		this.saveCardToDb();
 	},
@@ -68,33 +91,92 @@ let deck = {
 		}
 	},
 	checkForm: function(fields) {
-		switch (true) {
-			case (!!fields.title && !!fields.text && !!fields.author):
-				view.formEventListeners(1);
-				for (let key in fields) {
-					fields[key].trim();
+		let numValidField = 0,
+			editTitleInput = document.getElementById(fields.idx).querySelector('[name="title"]'),
+			editTextInput = document.getElementById(fields.idx).querySelector('[name="text"]'),
+			newCard = {
+				title: function() {
+					document.getElementsByTagName('label')[0].innerHTML =
+						deck.form.label.title.default + deck.form.label.required;
+					document.querySelector('[name="title"]').focus();
+				},
+				text: function() {
+					document.getElementsByTagName('label')[1].innerHTML =
+						deck.form.label.text.default + deck.form.label.required;
+					document.querySelector('[name="text"]').focus();
+				},
+				author: function() {
+					document.getElementsByTagName('label')[2].innerHTML =
+						deck.form.label.author.default + deck.form.label.required;
+					document.querySelector('[name="author"]').focus();
 				}
-				this.addCard(fields.title, fields.text, fields.author);
-				break;
-			case !fields.title:
-				document.getElementsByTagName('label')[0].innerHTML = 'Title is Required!';
-				document.querySelector('[name="title"]').focus();
-				break;
-			case !fields.text:
-				console.log(document.getElementsByTagName('label')[1]);
-				document.getElementsByTagName('label')[1].innerHTML = 'Paragrpah is Required!';
-				document.querySelector('[name="text"]').focus();
-				break;
-			case !fields.author:
-				document.getElementsByTagName('label')[2].innerHTML = 'Name or handle is Required!';
-				document.querySelector('[name="author"]').focus();
-				break;
-			default:
-				let elmP = document.createElement('p');
-				elmP.innerHTML = 'All fields are required!';
-				document.querySelector('.child-inner').insertBefore(elmP, document.querySelector('.child-inner').firstChild);
-				break;
+			},
+			editCard = {
+				title: function() {
+					editTitleInput.setAttribute('placeholder',
+						deck.form.label.title.default + deck.form.label.required);
+					editTitleInput.focus();
+				},
+				text: function() {
+					editTextInput.setAttribute('placeholder',
+						deck.form.label.text.default + deck.form.label.required);
+					editTextInput.focus();
+				}
+			};
+		/* form is the newCard variable defined above */
+		function processNewForm(form) {
+				fields[key].trim();
+				for (let key in fields) {
+				!!fields[key] ? numValidField++ : form[key]();
+			}
 		}
+		/* form is the editCard variable defined above */
+		function processEditForm(form) {
+				!!fields['title'].trim() ? numValidField++ : form[key]();
+				!!fields['text'].trim() ? numValidField++ : form[key]();
+			}
+		}
+
+		if (view.currentMode === this.modes.new) {
+			processNewForm(newCard);
+			/* using an && operator to "if true then do" */
+			numValidField === fields.length &&
+			this.addCard(fields.title, fields.text, fields.author);
+		} else {
+			processEditForm(editCard);
+			if (numValidField === fields.length-1) {
+				let cardId = deck.cards[fields.idx].id;
+				this.editCard(cardId, fields.title, fields.text, fields.idx);
+			}
+		}
+//
+//
+//		switch (true) {
+//			case (!!fields.title && !!fields.text && !!fields.author):
+//				for (let key in fields) {
+//					fields[key].trim();
+//				}
+//				this.addCard(fields.title, fields.text, fields.author);
+//				break;
+//			case !fields.title:
+//				document.getElementsByTagName('label')[0].innerHTML = 'Title is Required!';
+//				document.querySelector('[name="title"]').focus();
+//				break;
+//			case !fields.text:
+//				console.log(document.getElementsByTagName('label')[1]);
+//				document.getElementsByTagName('label')[1].innerHTML = 'Paragrpah is Required!';
+//				document.querySelector('[name="text"]').focus();
+//				break;
+//			case !fields.author:
+//				document.getElementsByTagName('label')[2].innerHTML = 'Name or handle is Required!';
+//				document.querySelector('[name="author"]').focus();
+//				break;
+//			default:
+//				let elmP = document.createElement('p');
+//				elmP.innerHTML = 'All fields are required!';
+//				document.querySelector('.child-inner').insertBefore(elmP, document.querySelector('.child-inner').firstChild);
+//				break;
+//		}
 	},
 	delCardFromDb: function(id) {
 		const curl = this.appconst.base_url+ '/' + id
@@ -181,8 +263,9 @@ let handlers = {
 		view.showCard(idx, 'editDel');
 	},
 	saveEdit: function(idx, title, text) {
-		let cardId = deck.cards[idx].id;
-		deck.editCard(cardId, title, text, idx);
+		deck.checkForm(fields);
+//		let cardId = deck.cards[idx].id;
+//		deck.editCard(cardId, title, text, idx);
 	},
 //	cancelNewCard: function(idx) {
 //		deck.deleteCard(0, idx, true);
@@ -384,25 +467,25 @@ let view = {
 		eleChild.appendChild(eleImg);
 
 		let labelTitle = document.createElement('label');
-		labelTitle.innerHTML = 'Title';
+		labelTitle.innerHTML = deck.form.label.title.default;
 		let inputTitle = document.createElement('input');
 		inputTitle.setAttribute('type', 'text');
 		inputTitle.setAttribute('name', 'title');
-		inputTitle.placeholder = 'Card title';
+		inputTitle.placeholder = deck.form.placeholder.title;
 		inputTitle.size = 32;
 
 		let labelText = document.createElement('label');
-		labelText.innerHTML = 'Paragraph';
+		labelText.innerHTML = deck.form.label.text.default;
 		let areaText = document.createElement('textarea');
 		areaText.setAttribute('name', 'text');
-		areaText.placeholder = 'A few sentences. Be creative, be yourself. This is the easy part';
+		areaText.placeholder = deck.form.placeholder.text;
 
 		let labelAuthor = document.createElement('label');
-		labelAuthor.innerHTML = 'Name or Handle';
+		labelAuthor.innerHTML = deck.form.label.author.default;
 		let inputAuthor = document.createElement('input');
 		inputAuthor.setAttribute('type', 'text');
 		inputAuthor.setAttribute('name', 'author');
-		inputAuthor.placeholder = 'Name or handle';
+		inputAuthor.placeholder = deck.form.placeholder.author;
 
 		let eleInnerChild = document.createElement('div');
 		eleInnerChild.setAttribute('class', 'child-inner');
@@ -579,18 +662,24 @@ let view = {
 			switch(field.target.name) {
 				case 'title':
 					!field.target.value ?
-					elmTitleLabel.innerHTML = 'Title is Required!' :
-					elmTitleLabel.innerHTML = 'awesome dude!';
+					elmTitleLabel.innerHTML =
+						deck.form.label.title.default + deck.form.label.required :
+					elmTitleLabel.innerHTML =
+						deck.form.label.title.feedback;
 					break;
 				case 'text':
 					!field.target.value ?
-					elmTextLabel.innerHTML = 'Paragraph is Required!' :
-					elmTextLabel.innerHTML = 'hOoley smokes... one more to go!';
+					elmTextLabel.innerHTML =
+						deck.form.label.text.default + deck.form.label.required :
+					elmTextLabel.innerHTML =
+						deck.form.label.text.feedback;
 					break;
 				case 'author':
 					!field.target.value ?
-					elmAuthorLabel.innerHTML = 'Name or Handle is Required!' :
-					elmAuthorLabel.innerHTML = 'you\'re so cool!';
+					elmAuthorLabel.innerHTML =
+						deck.form.label.text.default + deck.form.label.required :
+					elmAuthorLabel.innerHTML =
+						deck.form.label.author.feedback;
 					break;
 			}
 		}
@@ -637,7 +726,7 @@ let events = {
 	saveEdit: function(linkObj) {
 		this.fields.title = document.getElementById(linkObj.name).querySelector('[name="title"]').value;
 		this.fields.text = document.getElementById(linkObj.name).querySelector('[name="text"]').value;
-		handlers.saveEdit(linkObj.name, this.fields.title, this.fields.text);
+		handlers.saveEdit({idx: linkObj.name, title: this.fields.title, text: this.fields.text});
 	},
 	editCard: function(linkObj) {
 		handlers.editCard(linkObj.name);
