@@ -247,3 +247,43 @@ a:active {
 	font-size: 150%;
 }
 
+/* media queries */
+
+@media screen and (max-width: 678px) {
+    header {
+        padding-top: 0;
+		font-size: 400%;
+    }
+	nav {
+		font-size: 90%;
+	}
+	nav ul {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+/*
+	@media screen and (max-width: 470px) {
+    header {
+        padding-top: 0;
+		font-size: 300%;
+    }
+	nav {
+		font-size: 90%;
+	}
+	nav ul {
+		margin-top: 0;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+*/
+
+
+}
+
+
+
+
