@@ -54,15 +54,15 @@ let deck = {
 	},
 	Card: class {
 		constructor(title, text, author) {
-			this.id = this.nextId;
+			this.id = this.nextId.call(deck);
 			this.title = title;
 			this.text = text;
 			this.author = author;
 			this.image_url = deck.appconst.image_url;
 		}
-		get nextId() {
+		nextId() {
 			let id = [];
-			return (Math.max(...(deck.cards.map((card, i) => id[i] = card.id))))+1;
+			return (Math.max(...(this.cards.map((card, i) => id[i] = card.id))))+1;
 		}
 	},
  	takeNap: function(ms) {
@@ -82,6 +82,8 @@ let deck = {
 		this.saveCardToDb();
 	},
 	editCard: function(id, title, text, idx) {
+		//turns the listener with the spec idx off
+		view.editFormListeners(idx, 'off');
 		this.cards[idx].title = title;
 		this.cards[idx].text = text;
 		this.saveEditedCardToDb(id, title, text, idx);
@@ -161,7 +163,6 @@ let deck = {
 			numValidField === Object.size(fields) &&
 			this.addCard(fields.title, fields.text, fields.author);
 		} else {
-
 			processEditForm(editCard);
 			// factoring the idx property
 			if (numValidField === Object.size(fields)-1) {
@@ -169,34 +170,6 @@ let deck = {
 				this.editCard(cardId, fields.title, fields.text, fields.idx);
 			}
 		}
-//
-//
-//		switch (true) {
-//			case (!!fields.title && !!fields.text && !!fields.author):
-//				for (let key in fields) {
-//					fields[key].trim();
-//				}
-//				this.addCard(fields.title, fields.text, fields.author);
-//				break;
-//			case !fields.title:
-//				document.getElementsByTagName('label')[0].innerHTML = 'Title is Required!';
-//				document.querySelector('[name="title"]').focus();
-//				break;
-//			case !fields.text:
-//				console.log(document.getElementsByTagName('label')[1]);
-//				document.getElementsByTagName('label')[1].innerHTML = 'Paragrpah is Required!';
-//				document.querySelector('[name="text"]').focus();
-//				break;
-//			case !fields.author:
-//				document.getElementsByTagName('label')[2].innerHTML = 'Name or handle is Required!';
-//				document.querySelector('[name="author"]').focus();
-//				break;
-//			default:
-//				let elmP = document.createElement('p');
-//				elmP.innerHTML = 'All fields are required!';
-//				document.querySelector('.child-inner').insertBefore(elmP, document.querySelector('.child-inner').firstChild);
-//				break;
-//		}
 	},
 	delCardFromDb: function(id) {
 		const curl = this.appconst.base_url+ '/' + id
@@ -267,7 +240,6 @@ let handlers = {
 		let eleAuthor = node.children[3];
 
 		view.showEditInputs(node, eleActions, eleTitle, eleText, eleAuthor, idx);
-
 	},
 	deleteCard: function(idx) {
 		let cardId = deck.cards[idx].id;
@@ -280,6 +252,8 @@ let handlers = {
 		view.showPage(view.currentPage+1, view.currentMode);
 	},
 	cancelEdit: function(idx) {
+		//turns the listener with the the spec idx off
+		view.editFormListeners(idx, 'off');
 		view.showCard(idx, 'editDel');
 	},
 	saveEdit: function(fields) {
@@ -663,6 +637,8 @@ let view = {
 		node.replaceChild(this.createCardActionLinks('cancelSave', idx), eleActions);
 		node.replaceChild(inputTitle, eleTitle);
 		node.replaceChild(areaText, eleText);
+		// 'on' sets the listener to turn on
+		this.editFormListeners(idx, 'on');
 	},
 	formEventListeners: function(toStop) {
 		let elmTitleInput = document.querySelector('[name="title"]'),
@@ -704,6 +680,36 @@ let view = {
 						deck.form.label.author.feedback;
 					break;
 			}
+		}
+	},
+	editFormListeners: function(idx, addRemoveSwitch) {
+		let input = document.getElementById(idx).querySelector('input');
+		let textArea = document.getElementById(idx).querySelector('textarea');
+
+		if (addRemoveSwitch === 'on') {
+			input.addEventListener('blur', function setAttr() {
+			this.value === '' && this.setAttribute('placeholder',
+			deck.form.label.title.default + deck.form.label.required);
+			}, false);
+		} else {
+			input.removeEventListener('blur', function setAttr() {
+			this.value === '' && this.setAttribute('placeholder',
+		    deck.form.label.title.default + deck.form.label.required);
+			}, false);
+//			console.log('listener is off');
+		}
+
+		if (addRemoveSwitch === 'on') {
+			textArea.addEventListener('blur', function setAttr() {
+			this.value === '' && this.setAttribute('placeholder',
+		    deck.form.label.text.default + deck.form.label.required);
+			}, false);
+		} else {
+			textArea.removeEventListener('blur', function setAttr() {
+			this.value === '' && this.setAttribute('placeholder',
+		    deck.form.label.text.default + deck.form.label.required);
+			}, false);
+//			console.log('listener is off');
 		}
 	}
 };
