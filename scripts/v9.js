@@ -730,16 +730,10 @@ let view = {
 		// 'on' sets the listener to turn on
 		this.editFormListeners(idx, 'on');
 	},
-	// link this to the delete action
 	showDeleteConfirmation: function(idx) {
-		//get the node, idx, eleActions from?
-		//have the idx, how about the node and eleActions?
-		let node =
-			document.getElementById(idx).querySelector('.child-inner');
-
-		//delete is clicked, do this
+		let node = document.getElementById(idx)
+			.querySelector('.child-inner');
 		node.replaceChild(this.createCardActionLinks('yesNo', idx), node.firstChild);
-
 	},
 	formEventListeners: function(toStop) {
 		let elmTitleInput = document.querySelector('[name="title"]'),
