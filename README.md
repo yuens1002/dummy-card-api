@@ -1,4 +1,5 @@
-1. should have an intermediate confirm screen before deleting a card
-2. should have an intermediate screen after after saving before going back to edit
-3. should rebuild handlers to control all routes between services and app functions
-4. may look at a different way of loading images that do not cause slight pauses during animation with start and end animation lisetners
+1. should have an intermediate confirm dialogue before deleting a card
+1b. should have a yes to confirm delete
+1b. should have a no to cancel delete
+2. should experiment implementing a layover for new card
+3. should experiment at a different way to pause put a reload images with a 500ms pause
