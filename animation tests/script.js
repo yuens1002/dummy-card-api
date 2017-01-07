@@ -53,6 +53,15 @@ function cancelEdit(obj) {
 	console.log(obj.name);
 }
 
+let elmInput = document.querySelectorAll('input');
+let elmTextArea = document.querySelectorAll('textarea');
+
+let x = elmInput.length;
+while (x--)
+	elmInput[x].addEventListener('blur', function() {
+		this.value === '' && this.setAttribute('placeholder','you left me emptied');
+	}, false);
+
 
 
 //class Animal { 
