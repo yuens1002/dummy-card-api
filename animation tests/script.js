@@ -1,31 +1,113 @@
-//let 
+
+
+
+//load all images as usual
+//when animation is done, reload them again, 
+//with 500ms pause in between each
+
+
+//js animation detection
+
+// set the var here
+var playTiles = document.querySelectorAll(".play");
+var x = playTiles.length;
+
+while (x--) {
+	// listen for animation start
+	playTiles[x].addEventListener("animationstart",function(e){
+		console.log("log at beginning of monkey animation");
+	},false);
+
+	// listen for animation iteration
+	playTiles[x].addEventListener("animationiteration",function(e){
+		console.log("log at beginning of each subsequent iteration");
+	},false);
+
+	// listen for animation end
+	playTiles[x].addEventListener("animationend",function(e){
+		console.log("log at end of monkey animation");
+	},false);
+
+}
+/*
+	By Osvaldas Valutis, www.osvaldas.info
+	Available for use under the MIT License
+
+
+;( function ( document, window, index )
+{
+	var s = document.body || document.documentElement, s = s.style, prefixAnimation = '', prefixTransition = '';
+
+	if( s.WebkitAnimation == '' )	prefixAnimation	 = '-webkit-';
+	if( s.MozAnimation == '' )		prefixAnimation	 = '-moz-';
+	if( s.OAnimation == '' )		prefixAnimation	 = '-o-';
+
+	if( s.WebkitTransition == '' )	prefixTransition = '-webkit-';
+	if( s.MozTransition == '' )		prefixTransition = '-moz-';
+	if( s.OTransition == '' )		prefixTransition = '-o-';
+
+	Object.prototype.onCSSAnimationEnd = function( callback )
+	{
+		var runOnce = function( e ){ callback(); e.target.removeEventListener( e.type, runOnce ); };
+		this.addEventListener( 'webkitAnimationEnd', runOnce );
+		this.addEventListener( 'mozAnimationEnd', runOnce );
+		this.addEventListener( 'oAnimationEnd', runOnce );
+		this.addEventListener( 'oanimationend', runOnce );
+		this.addEventListener( 'animationend', runOnce );
+		if( ( prefixAnimation == '' && !( 'animation' in s ) ) || getComputedStyle( this )[ prefixAnimation + 'animation-duration' ] == '0s' ) callback();
+		return this;
+	};
+
+	Object.prototype.onCSSTransitionEnd = function( callback )
+	{
+		var runOnce = function( e ){ callback(); e.target.removeEventListener( e.type, runOnce ); };
+		this.addEventListener( 'webkitTransitionEnd', runOnce );
+		this.addEventListener( 'mozTransitionEnd', runOnce );
+		this.addEventListener( 'oTransitionEnd', runOnce );
+		this.addEventListener( 'transitionend', runOnce );
+		this.addEventListener( 'transitionend', runOnce );
+		if( ( prefixTransition == '' && !( 'transition' in s ) ) || getComputedStyle( this )[ prefixTransition + 'transition-duration' ] == '0s' ) callback();
+		return this;
+	};
+}( document, window, 0 ));
+
+*/
+
 //
-//let controller = function () {
-//	let	button = document.querySelector('button'),
-//		container = documnet.getElementsByClassName('container')[0];
-//	if (button.innerHTML === 'play') {
-//		button.innerHTML === 'pause';
-//		button.classList.add('move');
-//	} else {
-//		button.innerHTML === 'play';
-//		let computerStyle = window.getComputedStyle(sqt[i])
-//	}
-//	
-//}
-
-//let test = {
-//	ElmLi: class {
-//		constructor(elm) {
-//			this.li = elm;
-//		}
-//		get madedLi() {
-//			return 
-//		}
-//	},
-//	
-//}
-
-console.log(document.querySelector('[name="title"]').value);
+//
+//
+//
+//
+//
+//
+////let 
+////
+////let controller = function () {
+////	let	button = document.querySelector('button'),
+////		container = documnet.getElementsByClassName('container')[0];
+////	if (button.innerHTML === 'play') {
+////		button.innerHTML === 'pause';
+////		button.classList.add('move');
+////	} else {
+////		button.innerHTML === 'play';
+////		let computerStyle = window.getComputedStyle(sqt[i])
+////	}
+////	
+////}
+//
+////let test = {
+////	ElmLi: class {
+////		constructor(elm) {
+////			this.li = elm;
+////		}
+////		get madedLi() {
+////			return 
+////		}
+////	},
+////	
+////}
+//
+//console.log(document.querySelector('[name="title"]').value);
 
 
 document.querySelector('button').onclick = function() {
@@ -53,15 +135,15 @@ function cancelEdit(obj) {
 	console.log(obj.name);
 }
 
-let elmInput = document.querySelectorAll('input');
-let elmTextArea = document.querySelectorAll('textarea');
-
-let x = elmInput.length;
-while (x--)
-	elmInput[x].addEventListener('blur', function() {
-		this.value === '' && this.setAttribute('placeholder','you left me emptied');
-	}, false);
-
+//let elmInput = document.querySelectorAll('input');
+//let elmTextArea = document.querySelectorAll('textarea');
+//
+//let x = elmInput.length;
+//while (x--)
+//	elmInput[x].addEventListener('blur', function() {
+//		this.value === '' && this.setAttribute('placeholder','you left me emptied');
+//	}, false);
+//
 
 
 //class Animal { 
@@ -109,154 +191,154 @@ let view = {
 
 view.listners();
 
-class CreateLinkElm {
-	constructor(idx) {
-		this.idx = idx;
-		this.elmA = document.createElement('a');
-		this.fnPath = 'view.buttonEvents.',
-		this.links = {
-			control: {
-				prev: {
-					fnName: 'prev',
-					text: '← Prev'
-				},
-				next: {
-					fnName: 'next',
-					text: 'Next →'
-				}
-			},
-			menu: {
-				view: {
-					fnName: 'view',
-					text: '❐ Card Demo'
-				},
-				new: {
-					fnName: 'newCard',
-					text: '+ Add Card',
-					save: {	
-						fnName: 'saveNew',
-						text: '✓ Save'
-					}
-				},
-				edit: {
-					fnName: 'edit',
-					text: '✎ Edit Cards',
-					cancel: {
-						fnName: 'cancelEdit',
-						text: '✕ Cancel'
-					},
-					delete: {
-						fnName: 'delete',
-						text: '✕ Delete'
-					},
-					save: {
-						fnName: 'saveEdit',
-						text: '✓ Save'
-					}
-				}
-			}
-		};
-	}
-	get prev() {
-		this.makeLink(this.links.control.prev.text, {
-			href: '#',
-			onclick: this.onclickValue(this.links.control.prev.fnName,0)
-		});
-		return this.elmA;
-	}
-	get next() {
-		this.makeLink(this.links.control.next.text, {
-			href: '#',
-			onclick: this.onclickValue(this.links.control.next.fnName,0)
-		});
-		return this.elmA;
-	}
-	get view() {
-		this.makeLink(this.links.menu.view.text, {
-			href: '#',
-			onclick: this.onclickValue(this.links.menu.view.fnName,0)
-		});
-		return this.elmA;
-	}
-	get newCard() {
-		this.makeLink(this.links.menu.new.text, {
-			href: '#',
-			id: 'new-card',
-			onclick: this.onclickValue(this.links.menu.new.fnName,0)
-		});
-		return this.elmA;
-	}
-	get saveNew() {
-		this.makeLink(this.links.menu.new.save.text, {
-			href: '#',
-			onclick: this.onclickValue(this.links.menu.new.save.fnName,0)
-		});
-		return this.elmA;
-	}
-	get edit() {
-		this.makeLink(this.links.menu.edit.text, {
-			href: '#',
-			onclick: this.onclickValue(this.links.menu.edit.fnName,0)
-		});
-		return this.elmA;
-	}
-	get cancelEdit() {
-		this.makeLink(this.links.menu.edit.cancel.text, {
-			href: '#', 
-			name: this.idx, 
-			onclick: this.onclickValue(this.links.menu.edit.cancel.fnName)
-		});
-		return this.elmA;
-	}
-	get delete() {
-		this.makeLink(this.links.menu.edit.delete.text, {
-			href: '#',
-			name: this.idx,
-			onclick: this.onclickValue(this.links.menu.edit.delete.fnName)
-		});
-		return this.elmA;
-	}
-	get saveEdit() {
-		this.makeLink(this.links.menu.edit.save.text, {
-			href: '#',
-			name: this.idx,
-			onclick: this.onclickValue(this.links.menu.edit.save.fnName)
-		});
-		return this.elmA;
-	}
-	onclickValue(fnName) {
-		return (arguments.length > 1 ?
-			this.fnPath+fnName+'();return false;' : this.fnPath+fnName+'(this);return false;');
-	}
-	makeLink(text, attrs) {
-		for(var key in attrs) {
-    		this.elmA.setAttribute(key, attrs[key]);
-  		}
-		this.elmA.innerHTML = text;
-	}
-}
+//class CreateLinkElm {
+//	constructor(idx) {
+//		this.idx = idx;
+//		this.elmA = document.createElement('a');
+//		this.fnPath = 'view.buttonEvents.',
+//		this.links = {
+//			control: {
+//				prev: {
+//					fnName: 'prev',
+//					text: '← Prev'
+//				},
+//				next: {
+//					fnName: 'next',
+//					text: 'Next →'
+//				}
+//			},
+//			menu: {
+//				view: {
+//					fnName: 'view',
+//					text: '❐ Card Demo'
+//				},
+//				new: {
+//					fnName: 'newCard',
+//					text: '+ Add Card',
+//					save: {	
+//						fnName: 'saveNew',
+//						text: '✓ Save'
+//					}
+//				},
+//				edit: {
+//					fnName: 'edit',
+//					text: '✎ Edit Cards',
+//					cancel: {
+//						fnName: 'cancelEdit',
+//						text: '✕ Cancel'
+//					},
+//					delete: {
+//						fnName: 'delete',
+//						text: '✕ Delete'
+//					},
+//					save: {
+//						fnName: 'saveEdit',
+//						text: '✓ Save'
+//					}
+//				}
+//			}
+//		};
+//	}
+//	get prev() {
+//		this.makeLink(this.links.control.prev.text, {
+//			href: '#',
+//			onclick: this.onclickValue(this.links.control.prev.fnName,0)
+//		});
+//		return this.elmA;
+//	}
+//	get next() {
+//		this.makeLink(this.links.control.next.text, {
+//			href: '#',
+//			onclick: this.onclickValue(this.links.control.next.fnName,0)
+//		});
+//		return this.elmA;
+//	}
+//	get view() {
+//		this.makeLink(this.links.menu.view.text, {
+//			href: '#',
+//			onclick: this.onclickValue(this.links.menu.view.fnName,0)
+//		});
+//		return this.elmA;
+//	}
+//	get newCard() {
+//		this.makeLink(this.links.menu.new.text, {
+//			href: '#',
+//			id: 'new-card',
+//			onclick: this.onclickValue(this.links.menu.new.fnName,0)
+//		});
+//		return this.elmA;
+//	}
+//	get saveNew() {
+//		this.makeLink(this.links.menu.new.save.text, {
+//			href: '#',
+//			onclick: this.onclickValue(this.links.menu.new.save.fnName,0)
+//		});
+//		return this.elmA;
+//	}
+//	get edit() {
+//		this.makeLink(this.links.menu.edit.text, {
+//			href: '#',
+//			onclick: this.onclickValue(this.links.menu.edit.fnName,0)
+//		});
+//		return this.elmA;
+//	}
+//	get cancelEdit() {
+//		this.makeLink(this.links.menu.edit.cancel.text, {
+//			href: '#', 
+//			name: this.idx, 
+//			onclick: this.onclickValue(this.links.menu.edit.cancel.fnName)
+//		});
+//		return this.elmA;
+//	}
+//	get delete() {
+//		this.makeLink(this.links.menu.edit.delete.text, {
+//			href: '#',
+//			name: this.idx,
+//			onclick: this.onclickValue(this.links.menu.edit.delete.fnName)
+//		});
+//		return this.elmA;
+//	}
+//	get saveEdit() {
+//		this.makeLink(this.links.menu.edit.save.text, {
+//			href: '#',
+//			name: this.idx,
+//			onclick: this.onclickValue(this.links.menu.edit.save.fnName)
+//		});
+//		return this.elmA;
+//	}
+//	onclickValue(fnName) {
+//		return (arguments.length > 1 ?
+//			this.fnPath+fnName+'();return false;' : this.fnPath+fnName+'(this);return false;');
+//	}
+//	makeLink(text, attrs) {
+//		for(var key in attrs) {
+//    		this.elmA.setAttribute(key, attrs[key]);
+//  		}
+//		this.elmA.innerHTML = text;
+//	}
+//}
 
-function createActionLinks(idx) {
-	document.body.insertBefore(new CreateLinkElm(idx).prev, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).next, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).view, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).newCard, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).saveNew, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).edit, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).cancelEdit, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).delete, document.body.firstChild);
-	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
-	document.body.insertBefore(new CreateLinkElm(idx).saveEdit, document.body.firstChild);
-}
-
-createActionLinks(11);
+//function createActionLinks(idx) {
+//	document.body.insertBefore(new CreateLinkElm(idx).prev, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).next, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).view, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).newCard, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).saveNew, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).edit, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).cancelEdit, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).delete, document.body.firstChild);
+//	document.body.insertBefore(document.createElement('br'), document.body.firstChild);
+//	document.body.insertBefore(new CreateLinkElm(idx).saveEdit, document.body.firstChild);
+//}
+//
+//createActionLinks(11);
 
 
 /*
@@ -322,4 +404,6 @@ document.getElementsByClassName('toggleButton')[0].onclick = function() {
 //		}
 //		
 //	}
+
+
 		

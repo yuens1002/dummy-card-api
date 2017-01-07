@@ -166,8 +166,10 @@ let deck = {
 			processEditForm(editCard);
 			// factoring the idx property
 			if (numValidField === Object.size(fields)-1) {
+
 				let cardId = deck.cards[fields.idx].id;
 				this.editCard(cardId, fields.title, fields.text, fields.idx);
+				// calll handler.status(fields.idx, 'form saved');
 			}
 		}
 	},
@@ -268,6 +270,15 @@ let handlers = {
 	saveNewCard: function(fields) {
 		deck.checkForm(fields);
 //		deck.addCard(title, text, author);
+	},
+	//rename to something else
+	confirmDelete: function(idx) {
+		view.showDeleteConfirmation(idx);
+	},
+	//rename to something else
+	cancelDelete: function(idx) {
+		let node = document.getElementById(idx).querySelector('.child-inner');
+		node.replaceChild(view.createCardActionLinks('editDelVisible', idx), node.firstChild);
 	}
 };
 
@@ -313,7 +324,15 @@ let view = {
 						},
 						delete: {
 							fnName: 'deleteCard',
-							text: '✕ Delete'
+							text: '✕ Delete',
+							yes: {
+								fnName: 'deleteYes',
+								text: '✓ Yes'
+							},
+							no: {
+								fnName: 'deleteNo',
+								text: '✕ No'
+							}
 						},
 						save: {
 							fnName: 'saveEdit',
@@ -387,6 +406,24 @@ let view = {
 				href: '#',
 				name: this.idx,
 				onclick: this.onclickValue(this.links.menu.edit.delete.fnName)
+			});
+			return this.elmLi;
+		}
+		// needs to edit
+		get deleteYes() {
+			this.makeLink(this.links.menu.edit.delete.yes.text, {
+				href: '#',
+				name: this.idx,
+				onclick: this.onclickValue(this.links.menu.edit.delete.yes.fnName)
+			});
+			return this.elmLi;
+		}
+		// needs to edit
+		get deleteNo() {
+			this.makeLink(this.links.menu.edit.delete.no.text, {
+				href: '#',
+				name: this.idx,
+				onclick: this.onclickValue(this.links.menu.edit.delete.no.fnName)
 			});
 			return this.elmLi;
 		}
@@ -495,18 +532,35 @@ let view = {
 
 		return eleChild;
 	},
-	createCardActionLinks: function(type, idx) {
-		let elmUlLinks = document.createElement('ul');
-		if (type === 'editDel') {
-			elmUlLinks.setAttribute('class', 'hide-card-links');
-			elmUlLinks.appendChild(new this.CreateLinkElm(idx).editCard);
-			elmUlLinks.appendChild(new this.CreateLinkElm(idx).deleteCard);
-		} else if (type === 'cancelSave') {
-			elmUlLinks.appendChild(new this.CreateLinkElm(idx).cancelEdit);
-			elmUlLinks.appendChild(new this.CreateLinkElm(idx).saveEdit);
-		} else if (type === 'newCard') {
-			elmUlLinks.appendChild(new this.CreateLinkElm().saveNew);
-		}
+	createCardActionLinks: function(name, idx) {
+		let elmUlLinks = document.createElement('ul'),
+			types = {
+				editDel: function() {
+					elmUlLinks.setAttribute('class', 'hide-card-links');
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).editCard);
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).deleteCard);
+				},
+				editDelVisible: function() {
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).editCard);
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).deleteCard);
+				},
+				cancelSave: function() {
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).cancelEdit);
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).saveEdit);
+				},
+				newCard: function() {
+					elmUlLinks.appendChild(new this.CreateLinkElm().saveNew);
+				},
+				yesNo: function() {
+					let elmP = document.createElement('p');
+					// need to grab the text here an obj model
+					elmP.innerHTML= 'Are you Sure? Choose Yes to confirm delete or No to cancel'
+					elmUlLinks.appendChild(elmP);
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).deleteNo);
+					elmUlLinks.appendChild(new this.CreateLinkElm(idx).deleteYes);
+				}
+			};
+		types[name].call(this);
 		return elmUlLinks;
 	},
 	showNewPage: function(mode) {
@@ -544,6 +598,42 @@ let view = {
 			}
 		}
 	},
+//	showCards: async function (page, mode) {
+//		let eleMain = document.querySelector('#main');
+//		let takeNap = deck.takeNap;
+//		eleMain.innerHTML = '';
+//		for (let i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
+//    		if (deck.cards[i]) {
+//				eleMain.appendChild(this.makeCard(i,'editDel'));
+//				if (i === (page * this.cardsPerPage)-1) {
+//					await takeNap(2000);
+//					console.log('took a sec');
+////					document.getElementById((page * this.cardsPerPage)-1)
+////					.addEventListener('animationend', pause, false);
+////				}
+////				function pause() {
+////					let elmImgs = document.querySelectorAll('img');
+////					for (let j = 0; j < 3; j++) {
+////						await takeNap(500);
+////						let k = 0;
+////						let elmImgNew = document.createElement('img');
+////						elmImgNew.setAttribute('src', deck.cards[j].image_url);
+////						document.getElementById(page-1).querySelector('.child')
+////							.replaceChild(elmImgNew, elmImgs[k]);
+////						k++;
+////
+////					}
+//				}
+//				eleMain.lastChild.classList.add('moveRTL');
+//
+////				await deck.takeNap(400);
+//				if (mode === deck.modes['edit']) {
+//					document.querySelector('.hide-card-links')
+//					.removeAttribute('class');
+//				}
+//			}
+//		}
+//	},
 	showTitle: function(pageTitle) {
 		document.querySelector('header')
 		.innerHTML = pageTitle;
@@ -639,6 +729,17 @@ let view = {
 		node.replaceChild(areaText, eleText);
 		// 'on' sets the listener to turn on
 		this.editFormListeners(idx, 'on');
+	},
+	// link this to the delete action
+	showDeleteConfirmation: function(idx) {
+		//get the node, idx, eleActions from?
+		//have the idx, how about the node and eleActions?
+		let node =
+			document.getElementById(idx).querySelector('.child-inner');
+
+		//delete is clicked, do this
+		node.replaceChild(this.createCardActionLinks('yesNo', idx), node.firstChild);
+
 	},
 	formEventListeners: function(toStop) {
 		let elmTitleInput = document.querySelector('[name="title"]'),
@@ -749,7 +850,13 @@ let events = {
 		handlers.cancelEdit(linkObj.name);
 	},
 	deleteCard: function(linkObj) {
+		handlers.confirmDelete(linkObj.name);
+	},
+	deleteYes: function(linkObj) {
 		handlers.deleteCard(linkObj.name);
+	},
+	deleteNo: function(linkObj) {
+		handlers.cancelDelete(linkObj.name);
 	},
 	saveEdit: function(linkObj) {
 		this.fields.title = document.getElementById(linkObj.name).querySelector('[name="title"]').value;

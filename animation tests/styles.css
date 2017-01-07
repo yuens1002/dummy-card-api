@@ -30,9 +30,7 @@
 }
 
 
-
 .container {
-	z-index: 10000;
 	width: 100%;
 	display: flex;
 	display: inline-flex;
@@ -41,12 +39,55 @@
 
 }
 
+/*
 .child {
-	z-index: 10000;
 	margin: 1rem 1rem 1rem 1rem;
 	display: inline-block;
 	background-color: white;
 	width: 300px;
 	border-bottom: 2px solid #e3e3e3;
 	box-shadow: 5px 3px 10px #eaeaea;
+}
+*/
+
+.child {
+	display: inline-block;
+	width: 300px;
+	margin: 1rem;
+}
+
+
+
+
+.relative {
+	position: absolute;
+	height: 10rem;
+	z-index: 100;
+	border: 2rem solid #333;
+}
+
+.top {
+	position: relative;
+	width: inherit;
+	
+	background: rgba(0, 0, 0, .4);
+	
+}
+
+.absolute.none {
+	display: none;	
+}
+
+.absolute {
+	width: inherit;
+	height: inherit;
+	background-color: #eaeaea;
+	
+	
+/*	
+	border-bottom: 2px solid #e3e3e3;
+	box-shadow: 5px 3px 10px #eaeaea;
+*/
+	
+	
 }

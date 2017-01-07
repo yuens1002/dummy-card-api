@@ -83,27 +83,6 @@
       "author": "asdfasdf",
       "image_url": "http://lorempixel.com/300/150/",
       "id": 14
-    },
-    {
-      "title": "asdfasdf",
-      "text": "asdfasdf",
-      "author": "asdfasdf",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 15
-    },
-    {
-      "title": "You should instead use the in operator",
-      "text": "Checking for undefined-ness is not an accurate way of testing whether a key exists. What if the key exists but the value is actually undefined?",
-      "author": "Ates Goral",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 17
-    },
-    {
-      "title": "gfgfffd",
-      "text": "asdfasdf",
-      "author": "asdfasdf",
-      "image_url": "http://lorempixel.com/300/150/",
-      "id": 18
     }
   ]
 }
