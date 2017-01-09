@@ -6,7 +6,8 @@
 	3a. DONE! should slide card(s) to fill in the gap of the deleted card 
 	3b. DONE! should load previous page after deleting the last card on the page 
 4. should experiment implementing a layover for new card
-	status: played with z-layers, position: relative, absolute
+	* status: played with z-layers, position: relative, absolute
 5. should experiment a different way to reload images with a 500ms pause in between
+	* status: fiddled with it, need to build a listener to trigger the call to loop thru the 3 images on the page
 6. should experiment building modules to assemble the application
-	status: may need bibel to trans-compile js for import/export to work
+	* status: may need bibel to trans-compile js for import/export to work
