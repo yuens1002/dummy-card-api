@@ -10,4 +10,4 @@
 5. should experiment a different way to reload images with a 500ms pause in between
 	* status: fiddled with it, need to build a listener to trigger the call to loop thru the 3 images on the page
 6. should experiment building modules to assemble the application
-	* status: may need bibel to trans-compile js for import/export to work
+	* status: may need babel to trans-compile js for import/export to work
