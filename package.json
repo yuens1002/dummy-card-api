@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "./node_modules/.bin/json-server --watch db.json",
-    "es5": "babel lib/scripts/v9.es6.js --out-file lib/scripts/v9.js"
+    "es5": "babel lib/scripts/v9.es6.js --watch --out-file lib/scripts/v9.js"
   },
   "author": "sunny yuen",
   "license": "ISC",
