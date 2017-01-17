@@ -1,14 +1,19 @@
 {
-  "name": "dummy_card_api",
+  "name": "card-demo-app",
   "version": "1.0.0",
-  "description": "Dummy API for card content",
+  "description": "plain js demo web app",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/json-server --watch db.json"
+    "start": "./node_modules/.bin/json-server --watch db.json",
+    "es5": "babel lib/scripts/v9.es6.js --watch --out-file lib/scripts/v9.js"
   },
-  "author": "antoniocapelo",
+  "author": "sunny yuen",
   "license": "ISC",
   "dependencies": {
     "json-server": "^0.8.19"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0"
   }
 }

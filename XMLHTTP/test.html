@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Display IP Address</title>
+</head>
+
+<body>
+
+  <script>
+ 	var xhr = new XMLHttpRequest();
+	  xhr.open('GET', 'http://localhost:3000/cards', true);
+	  xhr.send();
+	  xhr.addEventListener('readystatechange', processRequest, false);
+
+	  function processRequest(e) {
+		  // readyState 4 is when the request is done
+		  // status 200 is when the server returns
+		  // request was sucessful
+		  if (xhr.readyState === 4 && xhr.status == 200) {
+			  var result = JSON.parse(xhr.responseText);
+			  document.querySelector('body').innerHTML = result;
+		  }
+	  }
+  </script>
+</body>
+
+</html>
