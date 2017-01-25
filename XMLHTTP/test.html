@@ -8,18 +8,44 @@
 <body>
 
   <script>
- 	var xhr = new XMLHttpRequest();
-	  xhr.open('GET', 'http://localhost:3000/cards', true);
-	  xhr.send();
-	  xhr.addEventListener('readystatechange', processRequest, false);
+	  var xhr = {
+		  url: 'http://localhost:3000/cards',
+		  methods: {'get': 'GET', 'post': 'POST', 'delete': 'DELETE', 'patch': 'PATCH'},
+		  result: [],
+		  makeXHR: function(method, cardData) {
+			  let xhr = new XMLHttpRequest();
+			  let data = JSON.stringify(cardData);
+			  switch(method) {
+				  case this.methods.get:
+					  xhr.open(method, this.url, true);
+					  xhr.responseType = 'json';
+					  xhr.error = function() {
+				          console.log(xhr.status);
+		  				  console.log('GET request was not successful');
+					  };
+					  xhr.onload = function() {
+						  this.result = xhr.response;
+						  document.querySelector('body').innerHTML = this.result[0].title;
+					  };
+					  xhr.send();
+					  break;
+				  case this.methods.post:
+	  				  xhr.open(method, this.url, true);
+					  xhr.responseType = 'json';
+					  xhr.setRequestHeader('Content-Type', 'application/json');
+					  xhr.error = function() {
+						  console.log(xhr.status);
+		  				  console.log('POST request was not successful');
+					  };
+					  xhr.onload = function() {
+						  this.result = xhr.response;
+						  console.log(this.result);
+						  //document.querySelector('body').innerHTML = this.result[0].title;
+					  };
+					  xhr.send(data);
+					  break;
 
-	  function processRequest(e) {
-		  // readyState 4 is when the request is done
-		  // status 200 is when the server returns
-		  // request was sucessful
-		  if (xhr.readyState === 4 && xhr.status == 200) {
-			  var result = JSON.parse(xhr.responseText);
-			  document.querySelector('body').innerHTML = result;
+			  }
 		  }
 	  }
   </script>
