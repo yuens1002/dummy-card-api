@@ -8,9 +8,9 @@
 <body>
 
   <script>
-	  var xhr = {
+	  var xhrService = {
 		  url: 'http://localhost:3000/cards',
-		  methods: {'get': 'GET', 'post': 'POST', 'delete': 'DELETE', 'patch': 'PATCH'},
+		  methods: {'get': 'GET', 'post': 'POST', 'patch': 'PATCH', 'delete': 'DELETE'},
 		  result: [],
 		  makeXHR: function(method, cardData) {
 			  let xhr = new XMLHttpRequest();
@@ -44,7 +44,29 @@
 					  };
 					  xhr.send(data);
 					  break;
-
+				  case this.methods.patch:
+	  				  xhr.open(method, this.url + '/' + cardData.id, true);
+					  xhr.responseType = 'json';
+					  xhr.setRequestHeader('Content-Type', 'application/json');
+					  xhr.error = function() {
+						  console.log(xhr.status);
+		  				  console.log('Patch request was not successful');
+					  };
+					  xhr.onload = function() {
+						  this.result = xhr.response;
+						  console.log(this.result);
+						  //document.querySelector('body').innerHTML = this.result[0].title;
+					  };
+					  xhr.send(data);
+					  break;
+				   case this.methods.delete:
+	  				  xhr.open(method, this.url + '/' + cardData.id, true);
+					  xhr.error = function() {
+						  console.log(xhr.status);
+		  				  console.log('Delete request was not successful');
+					  };
+					  xhr.send();
+					  break;
 			  }
 		  }
 	  }
