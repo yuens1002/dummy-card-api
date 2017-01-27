@@ -104,6 +104,13 @@
       "author": "P. J. O'Rourke",
       "image_url": "http://lorempixel.com/300/150/",
       "id": 12
+    },
+    {
+      "title": "i'm here",
+      "text": "testing a page",
+      "author": "Sunny Yuen",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 13
     }
   ]
 }
