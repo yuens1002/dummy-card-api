@@ -1,3 +1,6 @@
+# Javacript Application Demo
+This demo application allows a user to browse, update, add, and delete mini posts (cards) from a database. I've progressively built this application using pure Javascript without a framework or library. This master branch has the lastest stable build, you can see the progression from other branches in this repo. To run the application please follow the instructions below. 
+
 ## Goals with v10
 
 1. done! should use xhr requests instead of fetch
