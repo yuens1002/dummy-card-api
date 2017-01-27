@@ -1,13 +1,13 @@
 ## Goals with v10
 
-1. should use xhr requests instead of fetch
+1. done! should use xhr requests instead of fetch
 2. should separate modules into different files
-3. should use babel to trans-compile js files
-
+3. done! should use babel to trans-compile js files
 4. should experiment implementing a layover for new card
 	* status: played with z-layers, position: relative, absolute
 5. should experiment a different way to reload images with a 500ms pause in between
 	* status: fiddled with it, need to build a listener to trigger the call to loop thru the 3 images on the page
+6. should take out async functions b/c they're not compatible with safari	
 
 ## Usage
 
