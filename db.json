@@ -2,24 +2,108 @@
   "cards": [
     {
       "id": 1,
-      "title": "We are Humans Too",
-      "text": "We act like humans, we talk like humans, and we think like humans. And we call out anyone who does the opposite.",
-      "author": "António Capelo",
+      "title": "US humorist, novelist, short story author, & wit (1835 - 1910)",
+      "text": "Keep away from people who try to belittle your ambitions. Small people always do that, but the really great make you feel that you, too, can become great.",
+      "author": "Mark Twain",
       "image_url": "http://lorempixel.com/300/150/"
     },
     {
       "id": 2,
-      "title": "We work together",
-      "text": "We insist on working collaborativelly. <strong>No rockstars</strong>. No departments. The whole owns the whole project together.",
-      "author": "José Tavares",
+      "title": "Northern Exposure, The Quest, 1995",
+      "text": "I used to think of all the billions of people in the world, and of all those people, how was I going to meet the right ones? The right ones to be my friends, the right one to be my husband. Now I just believe you meet the people you're supposed to meet.",
+      "author": "Diane Frolov and Andrew Schneider",
       "image_url": "http://lorempixel.com/300/150/"
     },
     {
-      "id": 7,
-      "title": "Human Truths #1",
-      "text": "Humans are not perfect. Don’t be afraid to fail. And when you do, you might as well fail spectacularly. This is how we grow and learn.",
-      "author": "Luís Almeida",
+      "id": 3,
+      "title": "Richard Feynman (1918 - 1988)",
+      "text": "We are at the very beginning of time for the human race. It is not unreasonable that we grapple with problems. But there are tens of thousands of years in the future. Our responsibility is to do what we can, learn what we can, improve the solutions, and pass them on.",
+      "author": "Richard Feynman",
       "image_url": "http://lorempixel.com/300/150/"
+    },
+    {
+      "title": "O Magazine, August 2004",
+      "text": "Getting my lifelong weight struggle under control has come from a process of treating myself as well as I treat others in every way.",
+      "author": "Oprah Winfrey",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 4
+    },
+    {
+      "title": "love and hope and sex and dreams, 04-12-2006",
+      "text": "Maybe it's easier to like someone else's life, and live vicariously through it, than take some responsiblity to change our lives into lives we might like.",
+      "author": "Tish Grier",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 5
+    },
+    {
+      "title": "The Washington Post, 04-03-12",
+      "text": "Now I understand what exhaustion is. It’s not just a code word for heroin addiction. People don’t teach you how to handle the workload that comes from a little bit of success, and it’s something I’d never had to handle, because I’d been rejected for so long.",
+      "author": "Felicia Day",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 8
+    },
+    {
+      "title": "Progress",
+      "text": "Never discourage anyone...who continually makes progress, no matter how slow",
+      "author": "Plato (427 BC - 347 BC)",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 6
+    },
+    {
+      "title": "Essay About the Rules of Writing",
+      "text": "Be generous, be delicate, and always pursue the prize",
+      "author": "Henry James",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 7
+    },
+    {
+      "title": "The Mysteries of Udolpho",
+      "text": "One act of beneficence, one act of real usefulness, is worth all the abstract sentiment in the world. Sentiment is a disgrace, instead of an ornament, unless it lead us to good actions.",
+      "author": "Ann Radcliffe",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 11
+    },
+    {
+      "title": "Meditations",
+      "text": "Never esteem anything as of advantage to you that will make you break your word or lose your self-respect.",
+      "author": "Marcus Aurelius Antoninus, Roman Emperor, A.D. 161-180 (121 AD - 180 AD)",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 12
+    },
+    {
+      "title": "Talents",
+      "text": "If you have a talent, use it in every which way possible. Don't hoard it. Don't dole it out like a miser. Spend it lavishly like a millionaire intent on going broke.",
+      "author": "Brendan Francis",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 8
+    },
+    {
+      "title": "Discover Creativity",
+      "text": "The creative is the place where no one else has ever been. You have to leave the city of your comfort and go into the wilderness of your intuition. What you'll discover will be wonderful. What you'll discover will be yourself.",
+      "author": "Alan Alda",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 9
+    },
+    {
+      "title": "Animal Crossing: Wild World",
+      "text": "Mistakes and disappointment make the sweet things in life that much sweeter.",
+      "author": "Takayuki Ikkaku, Arisa Hosaka and Toshihiro Kawabata",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 10
+    },
+    {
+      "title": "You should instead use the in operator",
+      "text": "Checking for undefined-ness is not an accurate way of testing whether a key exists. What if the key exists but the value is actually undefined?",
+      "author": "Ates Goral",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 11
+    },
+    {
+      "title": "Tell Tales of a Hat",
+      "text": "A hat should be taken off when you greet a lady and left off for the rest of your life. Nothing looks more stupid than a hat.",
+      "author": "P. J. O'Rourke",
+      "image_url": "http://lorempixel.com/300/150/",
+      "id": 12
     }
   ]
 }
