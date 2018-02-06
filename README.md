@@ -12,11 +12,13 @@ This demo application allows a user to browse, update, add, and delete mini post
 	* status: fiddled with it, need to build a listener to trigger the call to loop thru the 3 images on the page
 6. should take out async functions b/c they're not compatible with safari	
 
-## Usage
+## Run the App
 
-Simply run
+1. Download, Clone, or Fork project
+2. Cd to project directory
+2. Type the following commands in terminal 
 
     npm install
     npm start
 
-Open index.html using any browser
+3. Open index.html using any browser
