@@ -16,9 +16,9 @@ This demo application allows a user to browse, update, add, and delete mini post
 
 1. Download, Clone, or Fork project
 2. Cd to project directory
-2. Type the following commands in terminal 
-
+3. Type the following commands in terminal 
+    ```
     npm install
     npm start
-
-3. Open index.html using any browser
+    ```
+4. Open index.html using any browser
