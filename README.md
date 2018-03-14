@@ -21,4 +21,4 @@ This demo application allows a user to browse, update, add, and delete mini post
     npm install
     npm start
     ```
-4. Open index.html using any browser
+4. Open http://localhost:3000 on any browser
