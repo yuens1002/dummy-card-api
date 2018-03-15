@@ -1,6 +1,5 @@
 node_modules
 npm-debug.log
-db.json
 /CNAME
 /db-org.json
 /.babelrc
