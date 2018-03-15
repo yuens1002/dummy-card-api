@@ -10,8 +10,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 	var deck = {
 		cards: [],
 		appconst: {
-			image_url: 'http://lorempixel.com/300/150/',
-			image_add_url: 'http://lorempixel.com/300/150/',
+			image_url: 'http://loremFlickr.com/300/150/',
+			image_add_url: 'http://loremFlickr.com/300/150/',
 			base_url: 'http://localhost:3000/cards',
 			//http://localhost:3000/cards
 			//http://104.236.131.116:8080/cards
@@ -671,56 +671,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 			this.showNavBar(mode);
 			this.showCards(page, mode);
 		},
-		showCards: async function showCards(page, mode) {
+		showCards: function showCards(page, mode) {
 			var eleMain = document.querySelector('#main');
 			eleMain.innerHTML = '';
 			for (var i = (page - 1) * this.cardsPerPage; i < page * this.cardsPerPage; i++) {
 				if (deck.cards[i]) {
 					eleMain.appendChild(this.makeCard(i, 'editDel'));
 					eleMain.lastChild.classList.add('moveRTL');
-					await deck.takeNap(400);
 					if (mode === deck.modes['edit']) {
 						document.querySelector('.hide-card-links').removeAttribute('class');
 					}
 				}
 			}
 		},
-		//	showCards: async function (page, mode) {
-		//		let eleMain = document.querySelector('#main');
-		//		let takeNap = deck.takeNap;
-		//		eleMain.innerHTML = '';
-		//		for (let i = (page - 1) * this.cardsPerPage; i < (page * this.cardsPerPage); i++) {
-		//    		if (deck.cards[i]) {
-		//				eleMain.appendChild(this.makeCard(i,'editDel'));
-		//				if (i === (page * this.cardsPerPage)-1) {
-		//					await takeNap(2000);
-		//					console.log('took a sec');
-		////					document.getElementById((page * this.cardsPerPage)-1)
-		////					.addEventListener('animationend', pause, false);
-		////				}
-		////				function pause() {
-		////					let elmImgs = document.querySelectorAll('img');
-		////					for (let j = 0; j < 3; j++) {
-		////						await takeNap(500);
-		////						let k = 0;
-		////						let elmImgNew = document.createElement('img');
-		////						elmImgNew.setAttribute('src', deck.cards[j].image_url);
-		////						document.getElementById(page-1).querySelector('.child')
-		////							.replaceChild(elmImgNew, elmImgs[k]);
-		////						k++;
-		////
-		////					}
-		//				}
-		//				eleMain.lastChild.classList.add('moveRTL');
-		//
-		////				await deck.takeNap(400);
-		//				if (mode === deck.modes['edit']) {
-		//					document.querySelector('.hide-card-links')
-		//					.removeAttribute('class');
-		//				}
-		//			}
-		//		}
-		//	},
 		showTitle: function showTitle(pageTitle) {
 			document.querySelector('header').innerHTML = pageTitle;
 		},
@@ -833,7 +796,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 				elmChilds[elmChild].getElementsByTagName('a')[0].setAttribute('name', idxToRest);
 				elmChilds[elmChild].getElementsByTagName('a')[1].setAttribute('name', idxToRest);
 			}
-			// refactor: turn into an event listner to sequence the animations
+			// refactor: turn into an event listener to sequence the animations
 			async function removeElm(toAdd) {
 				elmChildToRemove.classList.add('fadeout');
 				await deck.takeNap(500);

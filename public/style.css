@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto|Patua+One');
 
 body {
-	margin-top: 2rem;
+	margin-top: 1rem;
 	background-color: #eaeaea;
 	background-image: url('lib/img/retina_dust_@2X.png');
 	background-attachment: fixed;
@@ -41,12 +41,12 @@ nav li {
 }
 
 p {
-	font-size: 90%;
+	font-size: 80%;
 }
 
 header {
 	padding-top: 20px;
-	font-size: 600%;
+	font-size: 300%;
 	text-align: center;
 }
 
@@ -57,7 +57,7 @@ textarea {
 input[type=text],
 textarea {
 	font-family: 'Roboto', sans-serif;
-	font-size: 90%;
+	font-size: 85%;
   	-webkit-border-radius: 5;
   	-moz-border-radius: 5;
   	border-radius: 5px;
@@ -149,11 +149,12 @@ a:active {
 	display: inline-flex;
 	flex-flow: row wrap;
 	justify-content: center;
+	overflow: hidden;
 
 }
 
 .child {
-	margin: 1rem 1rem 1rem 1rem;
+	margin: 1rem;
 	display: inline-block;
 	background-color: white;
 	width: 300px;
